@@ -1,0 +1,8 @@
+{
+  "scenario_id": "real_warm_start_local",
+  "mode": "warm_start",
+  "adapter": "command",
+  "runs": 3,
+  "timeout_s": 120,
+  "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accepted-marker benchmarks/baseline/tmp/audio.accepted --audio-accept-ms 80 --post-accept-startup-ms 410 --fps 23 --num-frames 50' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --audio-accepted-marker benchmarks/baseline/tmp/audio.accepted --require-audio-accepted-marker --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png' --cleanup-path benchmarks/baseline/tmp/audio.accepted"
+}
