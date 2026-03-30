@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import platform
+import socket
 import statistics
 import subprocess
 import time
@@ -26,13 +28,14 @@ class RunResult:
     run_id: int
     scenario_id: str
     mode: str
-    status: str  # ok | crash | oom | error
+    status: str  # ok | partial | crash | oom | error
     avatar_preparation_time_ms: Optional[float]
     first_frame_latency_ms: Optional[float]
     steady_state_fps: Optional[float]
     peak_vram_mb: Optional[float]
     duration_ms: float
     error_message: Optional[str] = None
+    measurement_provenance: Optional[Dict[str, Any]] = None
 
 
 class ScenarioError(Exception):
@@ -46,6 +49,15 @@ def load_scenario(path: Path) -> Dict[str, Any]:
     if missing:
         raise ScenarioError(f"Missing required scenario keys: {missing}")
     return data
+
+
+def get_environment_metadata() -> Dict[str, Any]:
+    return {
+        "hostname": socket.gethostname(),
+        "platform": platform.platform(),
+        "python_version": platform.python_version(),
+        "gpu_query_available": _max_memory_used_mb() is not None,
+    }
 
 
 def _max_memory_used_mb() -> Optional[float]:
@@ -121,6 +133,7 @@ def run_command_adapter(command: str, timeout_s: float) -> Dict[str, Any]:
     payload.setdefault("error_message", None if proc.returncode == 0 else stderr.strip()[:500])
     payload.setdefault("peak_vram_mb", sampled_peak)
     payload.setdefault("duration_ms", elapsed_ms)
+    payload.setdefault("measurement_provenance", {"adapter": "command", "source": "stdout_json_line"})
     return payload
 
 
@@ -139,6 +152,7 @@ def run_simulated_adapter(config: Dict[str, Any], run_id: int) -> Dict[str, Any]
             "peak_vram_mb": profile.get("peak_vram_mb", 0.0) + 512.0,
             "error_message": "Simulated CUDA OOM",
             "duration_ms": 120.0,
+            "measurement_provenance": {"adapter": "simulated"},
         }
 
     return {
@@ -149,6 +163,7 @@ def run_simulated_adapter(config: Dict[str, Any], run_id: int) -> Dict[str, Any]
         "peak_vram_mb": profile.get("peak_vram_mb", 0.0) + drift,
         "error_message": None,
         "duration_ms": profile.get("duration_ms", 100.0) + drift,
+        "measurement_provenance": {"adapter": "simulated"},
     }
 
 
@@ -165,6 +180,7 @@ def summarize(results: List[RunResult]) -> Dict[str, Any]:
     return {
         "runs": len(results),
         "ok_runs": statuses.count("ok"),
+        "partial_runs": statuses.count("partial"),
         "crash_runs": statuses.count("crash") + statuses.count("error"),
         "oom_runs": statuses.count("oom"),
         "avatar_preparation_time_ms": _agg(vals("avatar_preparation_time_ms")),
@@ -226,6 +242,7 @@ def main() -> None:
                         (time.perf_counter() - started) * 1000.0,
                     ),
                     error_message=payload.get("error_message"),
+                    measurement_provenance=payload.get("measurement_provenance"),
                 )
             )
         except Exception as exc:
@@ -241,6 +258,7 @@ def main() -> None:
                     peak_vram_mb=None,
                     duration_ms=(time.perf_counter() - started) * 1000.0,
                     error_message=str(exc),
+                    measurement_provenance={"adapter": adapter, "error": "harness_exception"},
                 )
             )
 
@@ -249,6 +267,7 @@ def main() -> None:
         "scenario": scenario,
         "summary": summary,
         "results": [asdict(r) for r in results],
+        "environment": get_environment_metadata(),
         "generated_at_epoch_ms": int(time.time() * 1000),
     }
 

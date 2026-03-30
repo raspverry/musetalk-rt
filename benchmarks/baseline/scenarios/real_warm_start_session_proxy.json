@@ -1,5 +1,5 @@
 {
-  "scenario_id": "real_warm_start_local",
+  "scenario_id": "real_warm_start_session_proxy",
   "mode": "warm_start",
   "adapter": "command",
   "runs": 3,

@@ -1,0 +1,120 @@
+{
+  "scenario": {
+    "scenario_id": "real_warm_start_session_proxy",
+    "mode": "warm_start",
+    "adapter": "command",
+    "runs": 3,
+    "timeout_s": 120,
+    "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accepted-marker benchmarks/baseline/tmp/audio.accepted --audio-accept-ms 80 --post-accept-startup-ms 410 --fps 23 --num-frames 50' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --audio-accepted-marker benchmarks/baseline/tmp/audio.accepted --require-audio-accepted-marker --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png' --cleanup-path benchmarks/baseline/tmp/audio.accepted"
+  },
+  "summary": {
+    "runs": 3,
+    "ok_runs": 3,
+    "partial_runs": 0,
+    "crash_runs": 0,
+    "oom_runs": 0,
+    "avatar_preparation_time_ms": {
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "first_frame_latency_ms": {
+      "mean": 407.996,
+      "p50": 407.996,
+      "p95": 407.996,
+      "min": 407.996,
+      "max": 407.996
+    },
+    "steady_state_fps": {
+      "mean": 22.713,
+      "p50": 22.728,
+      "p95": 22.728,
+      "min": 22.685,
+      "max": 22.728
+    },
+    "peak_vram_mb": {
+      "mean": null,
+      "p50": null,
+      "p95": null,
+      "min": null,
+      "max": null
+    }
+  },
+  "results": [
+    {
+      "run_id": 1,
+      "scenario_id": "real_warm_start_session_proxy",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 407.99570083618164,
+      "steady_state_fps": 22.727510042492252,
+      "peak_vram_mb": null,
+      "duration_ms": 2751.262664794922,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "(frame_count-1)/(last_frame-first_frame)",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "file_glob_mtime"
+      }
+    },
+    {
+      "run_id": 2,
+      "scenario_id": "real_warm_start_session_proxy",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 407.99570083618164,
+      "steady_state_fps": 22.727510042492252,
+      "peak_vram_mb": null,
+      "duration_ms": 2752.504587173462,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "(frame_count-1)/(last_frame-first_frame)",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "file_glob_mtime"
+      }
+    },
+    {
+      "run_id": 3,
+      "scenario_id": "real_warm_start_session_proxy",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 407.99570083618164,
+      "steady_state_fps": 22.685422163136966,
+      "peak_vram_mb": null,
+      "duration_ms": 2762.0673179626465,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "(frame_count-1)/(last_frame-first_frame)",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "file_glob_mtime"
+      }
+    }
+  ],
+  "environment": {
+    "hostname": "b47e10ceccb6",
+    "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
+    "python_version": "3.10.19",
+    "gpu_query_available": false
+  },
+  "generated_at_epoch_ms": 1774858031924
+}

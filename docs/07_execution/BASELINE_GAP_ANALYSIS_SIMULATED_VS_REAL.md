@@ -1,36 +1,25 @@
 # Gap Analysis: Simulated vs Real Baseline Measurement
 
 ## Purpose
-Document the difference between:
-- **simulated harness mode** (deterministic scaffolding), and
-- **real command baseline mode** (actual executed command timing and frame observation).
+Document the current gap between:
+- `simulated` harness mode (deterministic scaffold), and
+- command-executed warm/cold baseline measurement.
 
-## What changed in this milestone
-- Added a real-command wrapper (`benchmarks/baseline/musetalk_baseline_runner.py`) and wired harness scenarios to it.
-- Preserved the existing harness report schema.
-- Added separate cold-start and warm-start real scenarios.
+## Warm-path truthfulness improvements in this milestone
+- Warm-start first-frame latency anchor now prefers **audio accepted marker -> first speaking frame**.
+- Warm-start runs can require the marker; missing marker becomes `partial`, not `ok`.
+- Per-run `measurement_provenance` records exactly how each metric was measured.
+- Report includes machine/environment metadata for reproducibility context.
 
-## Remaining gaps
-1. **MuseTalk model coupling not embedded in this repo**
-   - Current repository is documentation + instrumentation scaffold.
-   - Real MuseTalk script paths are supplied via template scenarios.
+## What still prevents true streaming-faithful measurement
+1. No direct runtime event hook for `audio_accepted` in a live session transport path.
+2. First-frame detection still depends on output frame file mtime, not stream egress timestamp.
+3. No synchronized client/server clock in this harness, so end-to-end visible latency is out of scope.
 
-2. **First-frame measurement proxy**
-   - Current real path measures first output frame file creation time.
-   - Target long-term definition should use explicit runtime/event timestamps from a streaming session path.
+## Why the current approach is still useful
+- It improves warm-path semantic alignment without changing runtime architecture.
+- It makes approximation boundaries explicit and machine-auditable in each run.
+- It avoids optimization claims and focuses on baseline instrumentation quality.
 
-3. **Steady-state FPS source**
-   - Current real path computes FPS from output frame mtimes.
-   - Target long-term should include runtime-internal produced-vs-sent frame counters.
-
-4. **VRAM attribution granularity**
-   - Current real path samples global `nvidia-smi` usage.
-   - Target long-term should capture per-process attribution when concurrency increases.
-
-## Why this is still truthful
-- Measurements are taken from actual command execution and filesystem outputs, not synthetic metric injection.
-- Any approximation is explicitly documented and isolated to measurement limitations.
-- No optimization claims are made.
-
-## Next integration step
-- Replace template commands with pinned real MuseTalk commands and fixed assets on benchmark hosts (RTX 3070 + reference server GPU) to freeze production baseline numbers.
+## Next non-optimization step
+Wire real MuseTalk runtime/session events (`audio accepted`, `first frame emitted`) into this wrapper to replace marker/file proxies while preserving report schema.
