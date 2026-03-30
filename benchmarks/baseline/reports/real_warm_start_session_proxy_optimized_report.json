@@ -1,0 +1,120 @@
+{
+  "scenario": {
+    "scenario_id": "real_warm_start_session_proxy_optimized",
+    "mode": "warm_start",
+    "adapter": "command",
+    "runs": 3,
+    "timeout_s": 120,
+    "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accepted-marker benchmarks/baseline/tmp/audio.accepted --audio-accept-ms 80 --post-accept-startup-ms 385 --fps 23 --num-frames 50 --disable-frame-write --emit-metrics-json' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --audio-accepted-marker benchmarks/baseline/tmp/audio.accepted --require-audio-accepted-marker --prefer-infer-json --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png' --cleanup-path benchmarks/baseline/tmp/audio.accepted"
+  },
+  "summary": {
+    "runs": 3,
+    "ok_runs": 3,
+    "partial_runs": 0,
+    "crash_runs": 0,
+    "oom_runs": 0,
+    "avatar_preparation_time_ms": {
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "first_frame_latency_ms": {
+      "mean": 391.371,
+      "p50": 391.526,
+      "p95": 391.526,
+      "min": 389.931,
+      "max": 392.655
+    },
+    "steady_state_fps": {
+      "mean": 22.472,
+      "p50": 22.472,
+      "p95": 22.472,
+      "min": 22.466,
+      "max": 22.477
+    },
+    "peak_vram_mb": {
+      "mean": null,
+      "p50": null,
+      "p95": null,
+      "min": null,
+      "max": null
+    }
+  },
+  "results": [
+    {
+      "run_id": 1,
+      "scenario_id": "real_warm_start_session_proxy_optimized",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 389.93120193481445,
+      "steady_state_fps": 22.471801685683932,
+      "peak_vram_mb": null,
+      "duration_ms": 2743.1247234344482,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write"
+      }
+    },
+    {
+      "run_id": 2,
+      "scenario_id": "real_warm_start_session_proxy_optimized",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 392.6546573638916,
+      "steady_state_fps": 22.476714468118846,
+      "peak_vram_mb": null,
+      "duration_ms": 2743.18265914917,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write"
+      }
+    },
+    {
+      "run_id": 3,
+      "scenario_id": "real_warm_start_session_proxy_optimized",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 391.5257453918457,
+      "steady_state_fps": 22.466404771094986,
+      "peak_vram_mb": null,
+      "duration_ms": 2747.750997543335,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write"
+      }
+    }
+  ],
+  "environment": {
+    "hostname": "b47e10ceccb6",
+    "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
+    "python_version": "3.10.19",
+    "gpu_query_available": false
+  },
+  "generated_at_epoch_ms": 1774858067679
+}
