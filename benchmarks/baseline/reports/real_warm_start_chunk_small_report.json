@@ -1,11 +1,11 @@
 {
   "scenario": {
-    "scenario_id": "real_warm_start_session_proxy",
+    "scenario_id": "real_warm_start_chunk_small",
     "mode": "warm_start",
     "adapter": "command",
     "runs": 3,
     "timeout_s": 120,
-    "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accepted-marker benchmarks/baseline/tmp/audio.accepted --audio-accept-ms 80 --post-accept-startup-ms 410 --fps 23 --num-frames 50' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --audio-accepted-marker benchmarks/baseline/tmp/audio.accepted --require-audio-accepted-marker --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png' --cleanup-path benchmarks/baseline/tmp/audio.accepted"
+    "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accept-ms 80 --post-accept-startup-ms 0 --chunk-ms 20 --startup-chunks 3 --chunk-overhead-ms 8 --fps 23 --num-frames 50 --disable-frame-write --emit-metrics-json' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --require-audio-accepted-marker --prefer-infer-json --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png'"
   },
   "summary": {
     "runs": 3,
@@ -21,18 +21,18 @@
       "max": 0.0
     },
     "first_frame_latency_ms": {
-      "mean": 410.662,
-      "p50": 411.996,
-      "p95": 411.996,
-      "min": 407.995,
-      "max": 411.996
+      "mean": 85.112,
+      "p50": 85.088,
+      "p95": 85.088,
+      "min": 85.025,
+      "max": 85.224
     },
     "steady_state_fps": {
-      "mean": 22.826,
-      "p50": 22.812,
-      "p95": 22.812,
-      "min": 22.812,
-      "max": 22.855
+      "mean": 22.441,
+      "p50": 22.441,
+      "p95": 22.441,
+      "min": 22.44,
+      "max": 22.444
     },
     "peak_vram_mb": {
       "mean": null,
@@ -45,14 +45,14 @@
   "results": [
     {
       "run_id": 1,
-      "scenario_id": "real_warm_start_session_proxy",
+      "scenario_id": "real_warm_start_chunk_small",
       "mode": "warm_start",
       "status": "ok",
       "avatar_preparation_time_ms": 0.0,
-      "first_frame_latency_ms": 411.99564933776855,
-      "steady_state_fps": 22.812163651919334,
+      "first_frame_latency_ms": 85.08777618408203,
+      "steady_state_fps": 22.441012453004234,
       "peak_vram_mb": null,
-      "duration_ms": 2739.389419555664,
+      "duration_ms": 2518.799066543579,
       "error_message": null,
       "measurement_provenance": {
         "mode": "warm_start",
@@ -60,24 +60,29 @@
         "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
         "first_frame_latency_anchor": "audio_accepted_marker",
         "audio_accepted_marker_present": true,
-        "steady_state_fps": "(frame_count-1)/(last_frame-first_frame)",
+        "steady_state_fps": "infer_json_steady_state_fps",
         "peak_vram_mb": "nvidia_smi_sampled_max",
-        "frame_source": "file_glob_mtime",
+        "frame_source": "in_memory_no_file_write",
         "infer_spawn_mode": "exec",
         "prep_spawn_mode": null,
-        "file_polling_used": true
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 20.0,
+        "startup_chunks": 3,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 84.0
       }
     },
     {
       "run_id": 2,
-      "scenario_id": "real_warm_start_session_proxy",
+      "scenario_id": "real_warm_start_chunk_small",
       "mode": "warm_start",
       "status": "ok",
       "avatar_preparation_time_ms": 0.0,
-      "first_frame_latency_ms": 411.99564933776855,
-      "steady_state_fps": 22.854723568808687,
+      "first_frame_latency_ms": 85.02531051635742,
+      "steady_state_fps": 22.439517836347274,
       "peak_vram_mb": null,
-      "duration_ms": 2738.243341445923,
+      "duration_ms": 2463.3657932281494,
       "error_message": null,
       "measurement_provenance": {
         "mode": "warm_start",
@@ -85,24 +90,29 @@
         "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
         "first_frame_latency_anchor": "audio_accepted_marker",
         "audio_accepted_marker_present": true,
-        "steady_state_fps": "(frame_count-1)/(last_frame-first_frame)",
+        "steady_state_fps": "infer_json_steady_state_fps",
         "peak_vram_mb": "nvidia_smi_sampled_max",
-        "frame_source": "file_glob_mtime",
+        "frame_source": "in_memory_no_file_write",
         "infer_spawn_mode": "exec",
         "prep_spawn_mode": null,
-        "file_polling_used": true
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 20.0,
+        "startup_chunks": 3,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 84.0
       }
     },
     {
       "run_id": 3,
-      "scenario_id": "real_warm_start_session_proxy",
+      "scenario_id": "real_warm_start_chunk_small",
       "mode": "warm_start",
       "status": "ok",
       "avatar_preparation_time_ms": 0.0,
-      "first_frame_latency_ms": 407.99546241760254,
-      "steady_state_fps": 22.81216111984224,
+      "first_frame_latency_ms": 85.22439002990723,
+      "steady_state_fps": 22.443948361670987,
       "peak_vram_mb": null,
-      "duration_ms": 2737.4227046966553,
+      "duration_ms": 2462.6641273498535,
       "error_message": null,
       "measurement_provenance": {
         "mode": "warm_start",
@@ -110,20 +120,25 @@
         "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
         "first_frame_latency_anchor": "audio_accepted_marker",
         "audio_accepted_marker_present": true,
-        "steady_state_fps": "(frame_count-1)/(last_frame-first_frame)",
+        "steady_state_fps": "infer_json_steady_state_fps",
         "peak_vram_mb": "nvidia_smi_sampled_max",
-        "frame_source": "file_glob_mtime",
+        "frame_source": "in_memory_no_file_write",
         "infer_spawn_mode": "exec",
         "prep_spawn_mode": null,
-        "file_polling_used": true
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 20.0,
+        "startup_chunks": 3,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 84.0
       }
     }
   ],
   "environment": {
-    "hostname": "b47e10ceccb6",
+    "hostname": "7735ea741100",
     "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
     "python_version": "3.10.19",
     "gpu_query_available": false
   },
-  "generated_at_epoch_ms": 1774858527214
+  "generated_at_epoch_ms": 1774860655087
 }

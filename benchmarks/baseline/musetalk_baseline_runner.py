@@ -10,11 +10,13 @@ import argparse
 import glob
 import json
 import os
+import shlex
 import subprocess
 import time
 from typing import Dict, Optional
 
 OOM_PATTERNS = ("out of memory", "cuda oom", "cudnn_status_alloc_failed")
+SHELL_META = set("|&;<>()$`\\\n")
 
 
 def detect_oom(stderr: str) -> bool:
@@ -22,15 +24,35 @@ def detect_oom(stderr: str) -> bool:
     return any(token in text for token in OOM_PATTERNS)
 
 
+def spawn_command(command: str) -> tuple[subprocess.Popen, str]:
+    """Use shell=False when possible to reduce shell startup overhead."""
+    if any(c in command for c in SHELL_META):
+        return subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True), "shell"
+    argv = shlex.split(command)
+    return subprocess.Popen(argv, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True), "exec"
+
+
 def run_cmd(command: str, timeout_s: float) -> Dict[str, object]:
     started = time.perf_counter()
-    proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    proc, spawn_mode = spawn_command(command)
     try:
         stdout, stderr = proc.communicate(timeout=timeout_s)
     except subprocess.TimeoutExpired:
         proc.kill()
-        return {"returncode": -9, "stdout": "", "stderr": f"Timeout after {timeout_s}s", "duration_ms": (time.perf_counter() - started) * 1000.0}
-    return {"returncode": proc.returncode, "stdout": stdout, "stderr": stderr, "duration_ms": (time.perf_counter() - started) * 1000.0}
+        return {
+            "returncode": -9,
+            "stdout": "",
+            "stderr": f"Timeout after {timeout_s}s",
+            "duration_ms": (time.perf_counter() - started) * 1000.0,
+            "spawn_mode": spawn_mode,
+        }
+    return {
+        "returncode": proc.returncode,
+        "stdout": stdout,
+        "stderr": stderr,
+        "duration_ms": (time.perf_counter() - started) * 1000.0,
+        "spawn_mode": spawn_mode,
+    }
 
 
 def parse_infer_metrics(stdout: str) -> Dict[str, object]:
@@ -100,6 +122,9 @@ def main() -> None:
     parser.add_argument("--poll-ms", type=float, default=50.0)
     args = parser.parse_args()
 
+
+    ffmpeg_in_infer_cmd = "ffmpeg" in args.infer_cmd.lower()
+
     if args.cleanup_glob:
         for p in glob.glob(args.cleanup_glob):
             try:
@@ -112,10 +137,12 @@ def main() -> None:
         except OSError:
             pass
 
+    prep_spawn_mode = None
     if args.mode == "cold_start":
         if not args.prep_cmd:
             raise SystemExit("cold_start requires --prep-cmd")
         prep = run_cmd(args.prep_cmd, args.timeout_s)
+        prep_spawn_mode = prep.get("spawn_mode")
         prep_ms = float(prep["duration_ms"])
         prep_stderr = str(prep["stderr"])
         if int(prep["returncode"]) != 0:
@@ -133,6 +160,7 @@ def main() -> None:
                     "first_frame_latency_ms": "not_measured_prep_failed",
                     "steady_state_fps": "not_measured_prep_failed",
                     "peak_vram_mb": "nvidia_smi_sampled_max",
+                    "spawn_mode": prep_spawn_mode,
                 },
             }))
             return
@@ -140,11 +168,12 @@ def main() -> None:
         prep_ms = 0.0
 
     infer_start_ts = time.time()
-    proc = subprocess.Popen(args.infer_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    proc, infer_spawn_mode = spawn_command(args.infer_cmd)
 
     peak = max_vram_mb()
     first_frame_ts = None
-    audio_accepted_ts = marker_mtime(args.audio_accepted_marker)
+    # When prefer-infer-json is enabled, anchor should come from infer metrics before marker file polling.
+    audio_accepted_ts = None if args.prefer_infer_json else marker_mtime(args.audio_accepted_marker)
 
     poll_s = args.poll_ms / 1000.0
     deadline = time.perf_counter() + args.timeout_s
@@ -153,10 +182,9 @@ def main() -> None:
         if sample is not None and (peak is None or sample > peak):
             peak = sample
 
-        if audio_accepted_ts is None:
+        if not args.prefer_infer_json and audio_accepted_ts is None:
             audio_accepted_ts = marker_mtime(args.audio_accepted_marker)
 
-        # Only use file polling as primary first-frame source when infer JSON metrics are not preferred.
         if not args.prefer_infer_json:
             ff = first_frame_mtime(args.frame_glob)
             if ff is not None:
@@ -173,11 +201,14 @@ def main() -> None:
 
     infer_metrics = parse_infer_metrics(stdout) if args.prefer_infer_json else {}
 
+    if args.prefer_infer_json:
+        audio_accepted_ts = infer_metrics.get("audio_accepted_ts") or marker_mtime(args.audio_accepted_marker)
+
     frame_count = int(infer_metrics.get("frame_count", 0)) if infer_metrics else count_frames(args.frame_glob)
     if first_frame_ts is None:
         first_frame_ts = infer_metrics.get("first_frame_ts") if infer_metrics else first_frame_mtime(args.frame_glob)
     if audio_accepted_ts is None:
-        audio_accepted_ts = infer_metrics.get("audio_accepted_ts") if infer_metrics else marker_mtime(args.audio_accepted_marker)
+        audio_accepted_ts = marker_mtime(args.audio_accepted_marker)
 
     last_frame_ts = infer_metrics.get("last_frame_ts") if infer_metrics else newest_frame_mtime(args.frame_glob)
 
@@ -210,6 +241,14 @@ def main() -> None:
         "steady_state_fps": "infer_json_steady_state_fps" if infer_metrics.get("steady_state_fps") is not None else "(frame_count-1)/(last_frame-first_frame)",
         "peak_vram_mb": "nvidia_smi_sampled_max",
         "frame_source": infer_metrics.get("frame_source", "file_glob_mtime"),
+        "infer_spawn_mode": infer_spawn_mode,
+        "prep_spawn_mode": prep_spawn_mode,
+        "file_polling_used": not args.prefer_infer_json,
+        "ffmpeg_in_hot_path_cmd": ffmpeg_in_infer_cmd,
+        "chunk_ms": infer_metrics.get("chunk_ms"),
+        "startup_chunks": infer_metrics.get("startup_chunks"),
+        "chunk_overhead_ms": infer_metrics.get("chunk_overhead_ms"),
+        "startup_delay_ms": infer_metrics.get("startup_delay_ms"),
     }
 
     print(json.dumps({

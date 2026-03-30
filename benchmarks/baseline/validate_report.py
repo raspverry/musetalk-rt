@@ -58,6 +58,12 @@ def main() -> None:
             fail(f"run[{idx}] missing first_frame_latency_ms provenance")
         if "frame_source" not in prov:
             fail(f"run[{idx}] missing frame_source provenance")
+        if "infer_spawn_mode" not in prov:
+            fail(f"run[{idx}] missing infer_spawn_mode provenance")
+        if "file_polling_used" not in prov:
+            fail(f"run[{idx}] missing file_polling_used provenance")
+        if "ffmpeg_in_hot_path_cmd" not in prov:
+            fail(f"run[{idx}] missing ffmpeg_in_hot_path_cmd provenance")
 
         if status == "ok":
             if run["first_frame_latency_ms"] is None:

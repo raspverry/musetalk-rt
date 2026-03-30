@@ -1,43 +1,64 @@
-# Warm-Path Hot Overhead Plan and Baseline Results
+# Warm-Path Hot Overhead Analysis and Results (Iteration 3)
 
 ## Objective
-Reduce warm-session hot-path overhead without changing product goals, and benchmark against existing baseline reports.
+Continue narrowing proxy-to-real-session gap for warm-path latency without major redesign.
 
-## Ranked hypotheses (latency-first)
-1. **H1: save-images path removal/bypass lowers warm first-frame latency**
-   - Rationale: writing every frame to disk introduces synchronous I/O overhead in the hot path.
-2. **H2: remove file-mtime dependence for first-frame timing when infer command can emit event timestamps**
-   - Rationale: marker/file polling adds boundary uncertainty and extra filesystem calls.
-3. **H3: reduce file-glob polling dependence in wrapper path**
-   - Rationale: repeated glob scans and mtime checks are avoidable when command provides structured timing output.
-4. **H4: preserve throughput while prioritizing first-frame latency**
-   - Rationale: product priority is perceived responsiveness first.
+## Ranked remaining warm-path overhead sources
+1. **Audio chunk boundary startup delay (highest remaining)**
+   - Startup waits for enough chunk context before first speaking frame.
+   - Chunk size and startup chunk count materially shift first-frame latency.
+2. **Residual disk/file handoff fallback path**
+   - File path still exists for diagnostics and compatibility; optimized path bypasses it.
+3. **Subprocess startup overhead**
+   - Reduced via `exec` spawn preference; remains only where shell features are needed.
+4. **File polling overhead (fallback only)**
+   - Removed in optimized infer-JSON path; still present in fallback mode.
+5. **FFmpeg dependency in proxy hot path**
+   - Current proxy scenarios show `ffmpeg_in_hot_path_cmd=false`; no ffmpeg loop observed in measured hot path.
 
-## Small patches applied (no major rewrite)
-1. **Patch A**: `approx_infer.py` adds optional in-memory mode (`--disable-frame-write`) and infer-event JSON output (`--emit-metrics-json`).
-2. **Patch B**: `musetalk_baseline_runner.py` adds `--prefer-infer-json` and consumes emitted timing metrics (`audio_accepted_ts`, `first_frame_ts`, `steady_state_fps`) before falling back to file mtimes.
-3. **Patch C**: `validate_report.py` adds strict warm-anchor validation (`--strict-warm-anchor`) and frame-source provenance requirement.
-4. **Patch D**: warm optimized scenario added (`real_warm_start_session_proxy_optimized.json`) and docs updated with provenance boundaries.
+## Small patches applied (3)
+### Patch 1 — chunk-boundary latency instrumentation
+- Added chunk model controls in `approx_infer.py`:
+  - `--chunk-ms`
+  - `--startup-chunks`
+  - `--chunk-overhead-ms`
+- Emit these in infer metrics for provenance.
 
-## Baseline comparison (same harness, warm path)
-Compared reports:
-- Before: `real_warm_start_session_proxy_report.json`
-- After: `real_warm_start_session_proxy_optimized_report.json`
+### Patch 2 — runner provenance expansion for remaining dependencies
+- Added provenance fields:
+  - `ffmpeg_in_hot_path_cmd`
+  - `chunk_ms`, `startup_chunks`, `chunk_overhead_ms`, `startup_delay_ms`
+- Keeps warm-path semantics and report schema compatibility.
 
-### Summary metrics (mean)
-- `first_frame_latency_ms`: **407.996 -> 391.371** (improved)
-- `steady_state_fps`: **22.713 -> 22.472** (slight regression)
-- `avatar_preparation_time_ms`: `0.0 -> 0.0` (unchanged warm semantics)
-- `status`: all runs `ok` for both reports
+### Patch 3 — validator strictness for provenance integrity
+- Validator now requires `ffmpeg_in_hot_path_cmd` in provenance (in addition to prior strict fields).
 
-## Regression/stability risk note
-- Risk: bypassing file writes may reduce compatibility with workflows that inspect frame artifacts directly.
-- Risk: infer-JSON timing depends on command cooperation; missing JSON falls back to file-based path.
-- Current quality risk: no visual-regression harness is included here; only runtime metric behavior is compared.
+## Before/after benchmark reports (chunk tradeoff)
+Compared:
+- Before (larger chunks): `real_warm_start_chunk_large_report.json`
+- After (smaller chunks): `real_warm_start_chunk_small_report.json`
 
-## Recommendation
-**Keep Patch B + Patch C immediately** (better provenance and warm-anchor truthfulness with no product-path rewrite).
+### Mean metrics
+- `first_frame_latency_ms`: **265.131 -> 85.112** (large improvement in response start)
+- `steady_state_fps`: **22.452 -> 22.441** (near-flat, tiny regression)
+- status: all runs `ok`
 
-**Conditionally keep Patch A for server warm path** where stream/event outputs are available and frame-file artifacts are not required in hot path.
+## Keep/drop recommendation per patch
+- **Patch 1 (chunk instrumentation): KEEP**
+  - Required to reason about chunk-size tradeoffs with evidence.
+- **Patch 2 (runner dependency provenance): KEEP**
+  - Improves decision quality and confirms ffmpeg/file-handoff status in each run.
+- **Patch 3 (validator strictness): KEEP**
+  - Prevents silent provenance regressions.
 
-Do not claim final runtime improvement beyond this controlled benchmark proxy until the same measurement path is wired to real MuseTalk session events.
+## Quality/stability regression risk note
+- Smaller chunk sizing may increase boundary churn in real runtimes; visual stability risk must be checked when wiring to real MuseTalk path.
+- Proxy path still does not measure true stream egress timestamps; it measures command-side anchors.
+
+## Is proxy path close enough to begin real runtime-facing optimization?
+**Yes, for controlled next-step runtime-facing optimization**, because:
+- warm semantics are strict and validated,
+- provenance now captures remaining major overhead classes,
+- chunk-latency tradeoffs are measurable.
+
+**No, for final production claims**, until real MuseTalk session event hooks replace proxy timing sources.

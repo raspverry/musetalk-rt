@@ -52,7 +52,7 @@ Non-breaking extensions used for provenance:
 ## Approximation boundaries
 - File mtime and marker timestamps remain proxies until runtime streaming events are wired directly.
 - `--prefer-infer-json` reduces file-system dependency by consuming command-emitted timing metrics.
-- Every run records provenance fields to make boundaries explicit.
+- Every run records provenance fields to make boundaries explicit, including `infer_spawn_mode` and `file_polling_used`.
 
 ## Validator
 `validate_report.py` verifies required fields and consistency.
@@ -70,3 +70,11 @@ python benchmarks/baseline/benchmark_harness.py \
   --scenario benchmarks/baseline/scenarios/real_warm_start_session_proxy_optimized.json \
   --output-dir benchmarks/baseline/reports
 ```
+
+## Audio chunk boundary analysis support
+- `approx_infer.py` can model warm-start startup from chunk boundaries using:
+  - `--chunk-ms`
+  - `--startup-chunks`
+  - `--chunk-overhead-ms`
+- Runner provenance records `chunk_ms`, `startup_chunks`, `chunk_overhead_ms`, and `startup_delay_ms`.
+- Use this for latency tradeoff analysis only; it is still a proxy path.

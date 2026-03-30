@@ -5,7 +5,7 @@
     "adapter": "command",
     "runs": 3,
     "timeout_s": 120,
-    "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accepted-marker benchmarks/baseline/tmp/audio.accepted --audio-accept-ms 80 --post-accept-startup-ms 385 --fps 23 --num-frames 50 --disable-frame-write --emit-metrics-json' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --audio-accepted-marker benchmarks/baseline/tmp/audio.accepted --require-audio-accepted-marker --prefer-infer-json --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png' --cleanup-path benchmarks/baseline/tmp/audio.accepted"
+    "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accept-ms 80 --post-accept-startup-ms 385 --fps 23 --num-frames 50 --disable-frame-write --emit-metrics-json' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --require-audio-accepted-marker --prefer-infer-json --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png'"
   },
   "summary": {
     "runs": 3,
@@ -21,18 +21,18 @@
       "max": 0.0
     },
     "first_frame_latency_ms": {
-      "mean": 391.371,
-      "p50": 391.526,
-      "p95": 391.526,
-      "min": 389.931,
-      "max": 392.655
+      "mean": 385.836,
+      "p50": 385.82,
+      "p95": 385.82,
+      "min": 385.796,
+      "max": 385.892
     },
     "steady_state_fps": {
-      "mean": 22.472,
-      "p50": 22.472,
-      "p95": 22.472,
-      "min": 22.466,
-      "max": 22.477
+      "mean": 22.48,
+      "p50": 22.481,
+      "p95": 22.481,
+      "min": 22.476,
+      "max": 22.482
     },
     "peak_vram_mb": {
       "mean": null,
@@ -49,10 +49,10 @@
       "mode": "warm_start",
       "status": "ok",
       "avatar_preparation_time_ms": 0.0,
-      "first_frame_latency_ms": 389.93120193481445,
-      "steady_state_fps": 22.471801685683932,
+      "first_frame_latency_ms": 385.79630851745605,
+      "steady_state_fps": 22.481582673767427,
       "peak_vram_mb": null,
-      "duration_ms": 2743.1247234344482,
+      "duration_ms": 2742.7616119384766,
       "error_message": null,
       "measurement_provenance": {
         "mode": "warm_start",
@@ -62,7 +62,10 @@
         "audio_accepted_marker_present": true,
         "steady_state_fps": "infer_json_steady_state_fps",
         "peak_vram_mb": "nvidia_smi_sampled_max",
-        "frame_source": "in_memory_no_file_write"
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false
       }
     },
     {
@@ -71,10 +74,10 @@
       "mode": "warm_start",
       "status": "ok",
       "avatar_preparation_time_ms": 0.0,
-      "first_frame_latency_ms": 392.6546573638916,
-      "steady_state_fps": 22.476714468118846,
+      "first_frame_latency_ms": 385.892391204834,
+      "steady_state_fps": 22.476141732059574,
       "peak_vram_mb": null,
-      "duration_ms": 2743.18265914917,
+      "duration_ms": 2743.8137531280518,
       "error_message": null,
       "measurement_provenance": {
         "mode": "warm_start",
@@ -84,7 +87,10 @@
         "audio_accepted_marker_present": true,
         "steady_state_fps": "infer_json_steady_state_fps",
         "peak_vram_mb": "nvidia_smi_sampled_max",
-        "frame_source": "in_memory_no_file_write"
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false
       }
     },
     {
@@ -93,10 +99,10 @@
       "mode": "warm_start",
       "status": "ok",
       "avatar_preparation_time_ms": 0.0,
-      "first_frame_latency_ms": 391.5257453918457,
-      "steady_state_fps": 22.466404771094986,
+      "first_frame_latency_ms": 385.819673538208,
+      "steady_state_fps": 22.481012148685124,
       "peak_vram_mb": null,
-      "duration_ms": 2747.750997543335,
+      "duration_ms": 2744.3606853485107,
       "error_message": null,
       "measurement_provenance": {
         "mode": "warm_start",
@@ -106,7 +112,10 @@
         "audio_accepted_marker_present": true,
         "steady_state_fps": "infer_json_steady_state_fps",
         "peak_vram_mb": "nvidia_smi_sampled_max",
-        "frame_source": "in_memory_no_file_write"
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false
       }
     }
   ],
@@ -116,5 +125,5 @@
     "python_version": "3.10.19",
     "gpu_query_available": false
   },
-  "generated_at_epoch_ms": 1774858067679
+  "generated_at_epoch_ms": 1774858536305
 }
