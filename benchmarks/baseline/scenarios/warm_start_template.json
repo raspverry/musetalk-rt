@@ -1,0 +1,8 @@
+{
+  "scenario_id": "warm_start_template",
+  "mode": "warm_start",
+  "adapter": "command",
+  "command": "python runtime_runner.py --avatar-id avatar_001 --audio sample.wav --mode warm",
+  "timeout_s": 90,
+  "runs": 10
+}
