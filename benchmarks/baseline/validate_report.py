@@ -31,6 +31,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--report", required=True, type=Path)
     parser.add_argument("--strict-warm-anchor", action="store_true")
+    parser.add_argument("--require-chunk-provenance", action="store_true")
     args = parser.parse_args()
 
     data = json.loads(args.report.read_text())
@@ -54,16 +55,20 @@ def main() -> None:
             fail(f"run[{idx}] invalid status: {status}")
 
         prov = run.get("measurement_provenance") or {}
-        if "first_frame_latency_ms" not in prov:
-            fail(f"run[{idx}] missing first_frame_latency_ms provenance")
-        if "frame_source" not in prov:
-            fail(f"run[{idx}] missing frame_source provenance")
-        if "infer_spawn_mode" not in prov:
-            fail(f"run[{idx}] missing infer_spawn_mode provenance")
-        if "file_polling_used" not in prov:
-            fail(f"run[{idx}] missing file_polling_used provenance")
-        if "ffmpeg_in_hot_path_cmd" not in prov:
-            fail(f"run[{idx}] missing ffmpeg_in_hot_path_cmd provenance")
+        for key in [
+            "first_frame_latency_ms",
+            "frame_source",
+            "infer_spawn_mode",
+            "file_polling_used",
+            "ffmpeg_in_hot_path_cmd",
+        ]:
+            if key not in prov:
+                fail(f"run[{idx}] missing {key} provenance")
+
+        if args.require_chunk_provenance:
+            for key in ["chunk_ms", "startup_chunks", "chunk_overhead_ms", "startup_delay_ms", "continuity_risk_hint", "cadence_profile"]:
+                if key not in prov:
+                    fail(f"run[{idx}] missing {key} chunk provenance")
 
         if status == "ok":
             if run["first_frame_latency_ms"] is None:

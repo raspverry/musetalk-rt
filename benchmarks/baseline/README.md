@@ -49,32 +49,47 @@ Non-breaking extensions used for provenance:
    - `crash`: non-zero exit without OOM signature.
    - `error`: exited 0 but produced no usable frame/latency evidence.
 
+## Warm-path policy config (default + fallback)
+Configured in:
+- `benchmarks/baseline/policies/warm_path_policy.json`
+
+Current recommendation:
+- default: `chunk_ms=120`, `startup_chunks=1`
+- fallback: `chunk_ms=160`, `startup_chunks=2`
+
+Fallback should be selected when:
+- continuity artifacts repeat,
+- chunk arrival jitter is high,
+- partial/error outcomes increase under default policy.
+
+Aggressive policies `(40,1)` and `(80,1)` are kept as experiment-only due to higher churn risk.
+
 ## Approximation boundaries
 - File mtime and marker timestamps remain proxies until runtime streaming events are wired directly.
 - `--prefer-infer-json` reduces file-system dependency by consuming command-emitted timing metrics.
-- Every run records provenance fields to make boundaries explicit, including `infer_spawn_mode` and `file_polling_used`.
+- Every run records provenance fields to make boundaries explicit, including `infer_spawn_mode`, `file_polling_used`, and chunk continuity hints.
 
 ## Validator
 `validate_report.py` verifies required fields and consistency.
 
-Strict warm-anchor check example:
+Strict warm-anchor + chunk provenance example:
 ```bash
 python benchmarks/baseline/validate_report.py \
-  --report benchmarks/baseline/reports/real_warm_start_session_proxy_optimized_report.json \
-  --strict-warm-anchor
+  --report benchmarks/baseline/reports/runtime_facing_default_tts_bursty_cm120_sc1_report.json \
+  --strict-warm-anchor \
+  --require-chunk-provenance
 ```
 
-## Quick start (warm-path optimized proxy)
+## Chunk-policy grid runner
+Use `run_chunk_policy_grid.py` to execute a controlled warm chunk-policy grid and produce ranked summaries:
 ```bash
-python benchmarks/baseline/benchmark_harness.py \
-  --scenario benchmarks/baseline/scenarios/real_warm_start_session_proxy_optimized.json \
-  --output-dir benchmarks/baseline/reports
+python benchmarks/baseline/run_chunk_policy_grid.py
 ```
 
-## Audio chunk boundary analysis support
-- `approx_infer.py` can model warm-start startup from chunk boundaries using:
-  - `--chunk-ms`
-  - `--startup-chunks`
-  - `--chunk-overhead-ms`
-- Runner provenance records `chunk_ms`, `startup_chunks`, `chunk_overhead_ms`, and `startup_delay_ms`.
-- Use this for latency tradeoff analysis only; it is still a proxy path.
+## Runtime-facing policy validation (bursty cadence approximation)
+Use `run_policy_runtime_facing_validation.py` to compare configured default/fallback under a `tts_bursty` cadence approximation:
+```bash
+python benchmarks/baseline/run_policy_runtime_facing_validation.py
+```
+
+This generates `runtime_facing_policy_validation_summary.json`.

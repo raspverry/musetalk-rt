@@ -249,6 +249,10 @@ def main() -> None:
         "startup_chunks": infer_metrics.get("startup_chunks"),
         "chunk_overhead_ms": infer_metrics.get("chunk_overhead_ms"),
         "startup_delay_ms": infer_metrics.get("startup_delay_ms"),
+        "frame_jitter_ms": infer_metrics.get("frame_jitter_ms"),
+        "chunk_boundary_rate_hz": infer_metrics.get("chunk_boundary_rate_hz"),
+        "continuity_risk_hint": infer_metrics.get("continuity_risk_hint"),
+        "cadence_profile": infer_metrics.get("cadence_profile", "unknown"),
     }
 
     print(json.dumps({

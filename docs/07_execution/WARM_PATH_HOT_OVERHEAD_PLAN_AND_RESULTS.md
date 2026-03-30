@@ -1,64 +1,60 @@
-# Warm-Path Hot Overhead Analysis and Results (Iteration 3)
+# Warm-Path Hot Overhead and Runtime-Facing Policy Validation (Iteration 5)
 
-## Objective
-Continue narrowing proxy-to-real-session gap for warm-path latency without major redesign.
+## Scope
+Transition from proxy-only chunk conclusions to runtime-facing validation approximation while preserving schema/provenance strictness.
+
+## Configured warm policy (implementation)
+Policy file:
+- `benchmarks/baseline/policies/warm_path_policy.json`
+
+Configured values:
+- **default:** `chunk_ms=120`, `startup_chunks=1`
+- **fallback:** `chunk_ms=160`, `startup_chunks=2`
+
+Fallback triggers:
+- repeated continuity artifacts,
+- high chunk arrival jitter,
+- elevated partial/error outcomes under default.
+
+Aggressive non-default:
+- `(40,1)` and `(80,1)` kept for experiments only.
 
 ## Ranked remaining warm-path overhead sources
-1. **Audio chunk boundary startup delay (highest remaining)**
-   - Startup waits for enough chunk context before first speaking frame.
-   - Chunk size and startup chunk count materially shift first-frame latency.
-2. **Residual disk/file handoff fallback path**
-   - File path still exists for diagnostics and compatibility; optimized path bypasses it.
-3. **Subprocess startup overhead**
-   - Reduced via `exec` spawn preference; remains only where shell features are needed.
-4. **File polling overhead (fallback only)**
-   - Removed in optimized infer-JSON path; still present in fallback mode.
-5. **FFmpeg dependency in proxy hot path**
-   - Current proxy scenarios show `ffmpeg_in_hot_path_cmd=false`; no ffmpeg loop observed in measured hot path.
+1. Audio chunk boundary startup delay
+2. Residual file handoff fallback path
+3. Subprocess startup overhead (mostly reduced)
+4. File polling fallback overhead
+5. FFmpeg re-entry risk (not seen in current proxy hot path)
 
-## Small patches applied (3)
-### Patch 1 — chunk-boundary latency instrumentation
-- Added chunk model controls in `approx_infer.py`:
-  - `--chunk-ms`
-  - `--startup-chunks`
-  - `--chunk-overhead-ms`
-- Emit these in infer metrics for provenance.
+## Patches in this iteration (3)
+1. **Policy config + selection encoding**
+   - Added `warm_path_policy.json` with default/fallback/aggressive policy metadata.
+2. **Cadence realism step**
+   - Added `tts_bursty` cadence profile in `approx_infer.py` and preserved provenance fields.
+3. **Runtime-facing validation runner**
+   - Added `run_policy_runtime_facing_validation.py` to benchmark configured default/fallback under bursty cadence.
 
-### Patch 2 — runner provenance expansion for remaining dependencies
-- Added provenance fields:
-  - `ffmpeg_in_hot_path_cmd`
-  - `chunk_ms`, `startup_chunks`, `chunk_overhead_ms`, `startup_delay_ms`
-- Keeps warm-path semantics and report schema compatibility.
+## Runtime-facing validation step (proxy approximation)
+Generated reports:
+- `runtime_facing_default_tts_bursty_cm120_sc1_report.json`
+- `runtime_facing_fallback_tts_bursty_cm160_sc2_report.json`
+- summary: `runtime_facing_policy_validation_summary.json`
 
-### Patch 3 — validator strictness for provenance integrity
-- Validator now requires `ffmpeg_in_hot_path_cmd` in provenance (in addition to prior strict fields).
+Observed means:
+- Default `(120,1)` first-frame latency: `103.258 ms`
+- Fallback `(160,2)` first-frame latency: `362.321 ms`
+- Both scenarios: all runs `ok`
 
-## Before/after benchmark reports (chunk tradeoff)
-Compared:
-- Before (larger chunks): `real_warm_start_chunk_large_report.json`
-- After (smaller chunks): `real_warm_start_chunk_small_report.json`
+Interpretation:
+- default remains preferred for perceived response start,
+- fallback remains stability-oriented and slower by design.
 
-### Mean metrics
-- `first_frame_latency_ms`: **265.131 -> 85.112** (large improvement in response start)
-- `steady_state_fps`: **22.452 -> 22.441** (near-flat, tiny regression)
-- status: all runs `ok`
+## Keep/drop recommendation
+- **KEEP default:** `(120,1)` for normal warm sessions.
+- **KEEP fallback:** `(160,2)` for stability-sensitive sessions or jitter spikes.
+- **DROP as default:** `(40,1)` and `(80,1)` due high churn risk hints, despite lower latency.
 
-## Keep/drop recommendation per patch
-- **Patch 1 (chunk instrumentation): KEEP**
-  - Required to reason about chunk-size tradeoffs with evidence.
-- **Patch 2 (runner dependency provenance): KEEP**
-  - Improves decision quality and confirms ffmpeg/file-handoff status in each run.
-- **Patch 3 (validator strictness): KEEP**
-  - Prevents silent provenance regressions.
-
-## Quality/stability regression risk note
-- Smaller chunk sizing may increase boundary churn in real runtimes; visual stability risk must be checked when wiring to real MuseTalk path.
-- Proxy path still does not measure true stream egress timestamps; it measures command-side anchors.
-
-## Is proxy path close enough to begin real runtime-facing optimization?
-**Yes, for controlled next-step runtime-facing optimization**, because:
-- warm semantics are strict and validated,
-- provenance now captures remaining major overhead classes,
-- chunk-latency tradeoffs are measurable.
-
-**No, for final production claims**, until real MuseTalk session event hooks replace proxy timing sources.
+## Proxy limitation note (still not production claim)
+- Real TTS cadence may have non-stationary burst patterns, silence gaps, and transport jitter not fully matched by this proxy.
+- Real session event timestamps (`audio_accepted`, `first_frame_emitted`) must be wired from runtime to replace proxy timing anchors.
+- Visual continuity validation with real lip-sync output is still required before production claims.
