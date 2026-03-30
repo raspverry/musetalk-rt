@@ -1,0 +1,182 @@
+[
+  {
+    "scenario_id": "real_warm_chunk_ms40_sc1",
+    "chunk_ms": 40,
+    "startup_chunks": 1,
+    "first_frame_latency_ms": 49.174,
+    "steady_state_fps": 22.431,
+    "ok_runs": 2,
+    "continuity_risk_hint": "high_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms40_sc1_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms80_sc1",
+    "chunk_ms": 80,
+    "startup_chunks": 1,
+    "first_frame_latency_ms": 89.003,
+    "steady_state_fps": 22.419,
+    "ok_runs": 2,
+    "continuity_risk_hint": "high_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms80_sc1_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms40_sc2",
+    "chunk_ms": 40,
+    "startup_chunks": 2,
+    "first_frame_latency_ms": 97.102,
+    "steady_state_fps": 22.441,
+    "ok_runs": 2,
+    "continuity_risk_hint": "medium_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms40_sc2_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms120_sc1",
+    "chunk_ms": 120,
+    "startup_chunks": 1,
+    "first_frame_latency_ms": 128.944,
+    "steady_state_fps": 22.445,
+    "ok_runs": 2,
+    "continuity_risk_hint": "medium_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms120_sc1_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms40_sc3",
+    "chunk_ms": 40,
+    "startup_chunks": 3,
+    "first_frame_latency_ms": 145.123,
+    "steady_state_fps": 22.441,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms40_sc3_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms160_sc1",
+    "chunk_ms": 160,
+    "startup_chunks": 1,
+    "first_frame_latency_ms": 168.841,
+    "steady_state_fps": 22.44,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms160_sc1_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms80_sc2",
+    "chunk_ms": 80,
+    "startup_chunks": 2,
+    "first_frame_latency_ms": 176.86,
+    "steady_state_fps": 22.426,
+    "ok_runs": 2,
+    "continuity_risk_hint": "medium_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms80_sc2_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms240_sc1",
+    "chunk_ms": 240,
+    "startup_chunks": 1,
+    "first_frame_latency_ms": 249.456,
+    "steady_state_fps": 22.441,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms240_sc1_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms120_sc2",
+    "chunk_ms": 120,
+    "startup_chunks": 2,
+    "first_frame_latency_ms": 256.944,
+    "steady_state_fps": 22.417,
+    "ok_runs": 2,
+    "continuity_risk_hint": "medium_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms120_sc2_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms80_sc3",
+    "chunk_ms": 80,
+    "startup_chunks": 3,
+    "first_frame_latency_ms": 264.983,
+    "steady_state_fps": 22.442,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms80_sc3_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms320_sc1",
+    "chunk_ms": 320,
+    "startup_chunks": 1,
+    "first_frame_latency_ms": 329.09,
+    "steady_state_fps": 22.447,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms320_sc1_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms160_sc2",
+    "chunk_ms": 160,
+    "startup_chunks": 2,
+    "first_frame_latency_ms": 337.11,
+    "steady_state_fps": 22.443,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms160_sc2_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms120_sc3",
+    "chunk_ms": 120,
+    "startup_chunks": 3,
+    "first_frame_latency_ms": 385.259,
+    "steady_state_fps": 22.441,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms120_sc3_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms240_sc2",
+    "chunk_ms": 240,
+    "startup_chunks": 2,
+    "first_frame_latency_ms": 497.254,
+    "steady_state_fps": 22.447,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms240_sc2_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms160_sc3",
+    "chunk_ms": 160,
+    "startup_chunks": 3,
+    "first_frame_latency_ms": 505.765,
+    "steady_state_fps": 22.438,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms160_sc3_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms320_sc2",
+    "chunk_ms": 320,
+    "startup_chunks": 2,
+    "first_frame_latency_ms": 657.463,
+    "steady_state_fps": 22.442,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms320_sc2_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms240_sc3",
+    "chunk_ms": 240,
+    "startup_chunks": 3,
+    "first_frame_latency_ms": 745.329,
+    "steady_state_fps": 22.417,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms240_sc3_report.json"
+  },
+  {
+    "scenario_id": "real_warm_chunk_ms320_sc3",
+    "chunk_ms": 320,
+    "startup_chunks": 3,
+    "first_frame_latency_ms": 985.715,
+    "steady_state_fps": 22.445,
+    "ok_runs": 2,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "report": "benchmarks/baseline/reports/real_warm_chunk_ms320_sc3_report.json"
+  }
+]

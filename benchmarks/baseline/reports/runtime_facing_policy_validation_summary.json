@@ -1,0 +1,14 @@
+[
+  {
+    "scenario": "runtime_facing_default_tts_bursty_cm120_sc1",
+    "first_frame_latency_ms_mean": 103.258,
+    "steady_state_fps_mean": 22.424,
+    "continuity_risk_hint": "medium_plus_bursty"
+  },
+  {
+    "scenario": "runtime_facing_fallback_tts_bursty_cm160_sc2",
+    "first_frame_latency_ms_mean": 362.321,
+    "steady_state_fps_mean": 22.444,
+    "continuity_risk_hint": "lower_boundary_churn"
+  }
+]

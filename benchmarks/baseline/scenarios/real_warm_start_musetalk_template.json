@@ -1,0 +1,8 @@
+{
+  "scenario_id": "real_warm_start_musetalk_template",
+  "mode": "warm_start",
+  "adapter": "command",
+  "runs": 5,
+  "timeout_s": 600,
+  "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --infer-cmd 'python /path/to/MuseTalk/scripts/realtime_inference.py --avatar-id avatar_001 --audio /path/to/audio.wav ...' --frame-glob '/tmp/musetalk_frames/*.png' --audio-accepted-marker '/tmp/musetalk_audio.accepted' --require-audio-accepted-marker --cleanup-glob '/tmp/musetalk_frames/*.png' --cleanup-path '/tmp/musetalk_audio.accepted'"
+}
