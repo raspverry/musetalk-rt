@@ -1,0 +1,120 @@
+{
+  "scenario": {
+    "scenario_id": "real_warm_chunk_ms40_sc1",
+    "mode": "warm_start",
+    "adapter": "command",
+    "runs": 2,
+    "timeout_s": 120,
+    "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accept-ms 80 --post-accept-startup-ms 0 --chunk-ms 40 --startup-chunks 1 --chunk-overhead-ms 8 --fps 23 --num-frames 50 --disable-frame-write --emit-metrics-json' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --require-audio-accepted-marker --prefer-infer-json --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png'"
+  },
+  "summary": {
+    "runs": 2,
+    "ok_runs": 2,
+    "partial_runs": 0,
+    "crash_runs": 0,
+    "oom_runs": 0,
+    "avatar_preparation_time_ms": {
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "first_frame_latency_ms": {
+      "mean": 49.174,
+      "p50": 48.913,
+      "p95": 48.913,
+      "min": 48.913,
+      "max": 49.436
+    },
+    "steady_state_fps": {
+      "mean": 22.431,
+      "p50": 22.427,
+      "p95": 22.427,
+      "min": 22.427,
+      "max": 22.434
+    },
+    "peak_vram_mb": {
+      "mean": null,
+      "p50": null,
+      "p95": null,
+      "min": null,
+      "max": null
+    }
+  },
+  "results": [
+    {
+      "run_id": 1,
+      "scenario_id": "real_warm_chunk_ms40_sc1",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 49.43561553955078,
+      "steady_state_fps": 22.42735759039216,
+      "peak_vram_mb": null,
+      "duration_ms": 2419.3596839904785,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 40.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 48.0,
+        "frame_jitter_ms": 0.13316395388288677,
+        "chunk_boundary_rate_hz": 25.0,
+        "continuity_risk_hint": "high_boundary_churn"
+      }
+    },
+    {
+      "run_id": 2,
+      "scenario_id": "real_warm_chunk_ms40_sc1",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 48.913002014160156,
+      "steady_state_fps": 22.43397969008889,
+      "peak_vram_mb": null,
+      "duration_ms": 2423.5897064208984,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 40.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 48.0,
+        "frame_jitter_ms": 0.03116408335609218,
+        "chunk_boundary_rate_hz": 25.0,
+        "continuity_risk_hint": "high_boundary_churn"
+      }
+    }
+  ],
+  "environment": {
+    "hostname": "40b3004ded7c",
+    "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
+    "python_version": "3.10.19",
+    "gpu_query_available": false
+  },
+  "generated_at_epoch_ms": 1774861507542
+}
