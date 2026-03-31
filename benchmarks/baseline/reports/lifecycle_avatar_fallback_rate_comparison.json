@@ -1,0 +1,11 @@
+{
+  "before_summary": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_r8_reliability_summary.json",
+  "after_summary": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_avatar_real_r8_reliability_summary.json",
+  "before_fallback_rate": 1.0,
+  "after_fallback_rate": 0.0,
+  "delta_fallback_rate": -1.0,
+  "before_runs_with_fallback": 8,
+  "after_runs_with_fallback": 0,
+  "ready_for_30_run_check": true,
+  "recommendation": "Proceed to 30-run reliability check for avatar stage"
+}

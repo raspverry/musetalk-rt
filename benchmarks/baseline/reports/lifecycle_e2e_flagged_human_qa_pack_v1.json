@@ -1,0 +1,201 @@
+{
+  "pack_id": "lifecycle_e2e_flagged_human_qa_pack_v1",
+  "scope": "flagged_non_production_human_qa",
+  "reviewer_procedure": [
+    "Review stable profile first (best -> median -> worst), then bursty, then jittery.",
+    "Use the same prompt/content and playback setup across all profiles.",
+    "Score each representative sample on all rubric dimensions before comparing profiles.",
+    "If any sample shows severe seam or A/V break (score <=2), flag immediate no-go candidate."
+  ],
+  "profiles": {
+    "stable": {
+      "report": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_qv12_report.json",
+      "representatives": {
+        "best": {
+          "run_index": 10,
+          "status": "ok",
+          "first_frame_latency_ms": 129.17709350585938,
+          "steady_state_fps": 18.933898668716903,
+          "continuity_risk_hint": "lower_boundary_churn",
+          "continuity_risk_basis": "policy_plus_observed_stability",
+          "frame_jitter_ms": 0.012446479413877628,
+          "cadence_profile": "fixed",
+          "lifecycle_signal_kinds": [
+            "real_wired_session_start_observation",
+            "real_wired_avatar_probe",
+            "real_wired_audio_accepted_observation",
+            "real_wired_first_frame_observation"
+          ],
+          "lifecycle_proxy_fallbacks": []
+        },
+        "median": {
+          "run_index": 2,
+          "status": "ok",
+          "first_frame_latency_ms": 129.26054000854492,
+          "steady_state_fps": 18.93051640984308,
+          "continuity_risk_hint": "lower_boundary_churn",
+          "continuity_risk_basis": "policy_plus_observed_stability",
+          "frame_jitter_ms": 0.02175228951677181,
+          "cadence_profile": "fixed",
+          "lifecycle_signal_kinds": [
+            "real_wired_session_start_observation",
+            "real_wired_avatar_probe",
+            "real_wired_audio_accepted_observation",
+            "real_wired_first_frame_observation"
+          ],
+          "lifecycle_proxy_fallbacks": []
+        },
+        "worst": {
+          "run_index": 3,
+          "status": "ok",
+          "first_frame_latency_ms": 129.18615341186523,
+          "steady_state_fps": 18.93294053920497,
+          "continuity_risk_hint": "lower_boundary_churn",
+          "continuity_risk_basis": "policy_plus_observed_stability",
+          "frame_jitter_ms": 0.053005640567417196,
+          "cadence_profile": "fixed",
+          "lifecycle_signal_kinds": [
+            "real_wired_session_start_observation",
+            "real_wired_avatar_probe",
+            "real_wired_audio_accepted_observation",
+            "real_wired_first_frame_observation"
+          ],
+          "lifecycle_proxy_fallbacks": []
+        }
+      }
+    },
+    "bursty": {
+      "report": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_stress_bursty_qv12_report.json",
+      "representatives": {
+        "best": {
+          "run_index": 1,
+          "status": "ok",
+          "first_frame_latency_ms": 283.8099002838135,
+          "steady_state_fps": 5.547661207167566,
+          "continuity_risk_hint": "medium_plus_bursty",
+          "continuity_risk_basis": "policy_threshold",
+          "frame_jitter_ms": 47.053805510587374,
+          "cadence_profile": "tts_bursty",
+          "lifecycle_signal_kinds": [
+            "real_wired_session_start_observation",
+            "real_wired_avatar_probe",
+            "real_wired_audio_accepted_observation",
+            "real_wired_first_frame_observation"
+          ],
+          "lifecycle_proxy_fallbacks": []
+        },
+        "median": {
+          "run_index": 9,
+          "status": "ok",
+          "first_frame_latency_ms": 283.7543487548828,
+          "steady_state_fps": 5.546947997181554,
+          "continuity_risk_hint": "medium_plus_bursty",
+          "continuity_risk_basis": "policy_threshold",
+          "frame_jitter_ms": 47.074372068908495,
+          "cadence_profile": "tts_bursty",
+          "lifecycle_signal_kinds": [
+            "real_wired_session_start_observation",
+            "real_wired_avatar_probe",
+            "real_wired_audio_accepted_observation",
+            "real_wired_first_frame_observation"
+          ],
+          "lifecycle_proxy_fallbacks": []
+        },
+        "worst": {
+          "run_index": 8,
+          "status": "ok",
+          "first_frame_latency_ms": 283.7822437286377,
+          "steady_state_fps": 5.546084436122835,
+          "continuity_risk_hint": "medium_plus_bursty",
+          "continuity_risk_basis": "policy_threshold",
+          "frame_jitter_ms": 47.10522547837405,
+          "cadence_profile": "tts_bursty",
+          "lifecycle_signal_kinds": [
+            "real_wired_session_start_observation",
+            "real_wired_avatar_probe",
+            "real_wired_audio_accepted_observation",
+            "real_wired_first_frame_observation"
+          ],
+          "lifecycle_proxy_fallbacks": []
+        }
+      }
+    },
+    "jittery": {
+      "report": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_stress_jittery_qv12_report.json",
+      "representatives": {
+        "best": {
+          "run_index": 2,
+          "status": "ok",
+          "first_frame_latency_ms": 283.8106155395508,
+          "steady_state_fps": 5.31342480301295,
+          "continuity_risk_hint": "high_boundary_churn",
+          "continuity_risk_basis": "policy_plus_observed_instability",
+          "frame_jitter_ms": 55.31468441911423,
+          "cadence_profile": "jittery",
+          "lifecycle_signal_kinds": [
+            "real_wired_session_start_observation",
+            "real_wired_avatar_probe",
+            "real_wired_audio_accepted_observation",
+            "real_wired_first_frame_observation"
+          ],
+          "lifecycle_proxy_fallbacks": []
+        },
+        "median": {
+          "run_index": 8,
+          "status": "ok",
+          "first_frame_latency_ms": 283.75244140625,
+          "steady_state_fps": 5.31326467735821,
+          "continuity_risk_hint": "high_boundary_churn",
+          "continuity_risk_basis": "policy_plus_observed_instability",
+          "frame_jitter_ms": 55.34400946368592,
+          "cadence_profile": "jittery",
+          "lifecycle_signal_kinds": [
+            "real_wired_session_start_observation",
+            "real_wired_avatar_probe",
+            "real_wired_audio_accepted_observation",
+            "real_wired_first_frame_observation"
+          ],
+          "lifecycle_proxy_fallbacks": []
+        },
+        "worst": {
+          "run_index": 4,
+          "status": "ok",
+          "first_frame_latency_ms": 283.6902141571045,
+          "steady_state_fps": 5.297308098173171,
+          "continuity_risk_hint": "high_boundary_churn",
+          "continuity_risk_basis": "policy_plus_observed_instability",
+          "frame_jitter_ms": 56.16993441906665,
+          "cadence_profile": "jittery",
+          "lifecycle_signal_kinds": [
+            "real_wired_session_start_observation",
+            "real_wired_avatar_probe",
+            "real_wired_audio_accepted_observation",
+            "real_wired_first_frame_observation"
+          ],
+          "lifecycle_proxy_fallbacks": []
+        }
+      }
+    }
+  },
+  "rubric": {
+    "scale": "1-5 (5 is best)",
+    "dimensions": [
+      "continuity_seam_perception",
+      "first_response_naturalness",
+      "speaking_stability",
+      "audio_visual_alignment_at_response_start"
+    ],
+    "thresholds_for_warn_only_canary": {
+      "continuity_seam_perception": 3.8,
+      "first_response_naturalness": 3.5,
+      "speaking_stability": 3.8,
+      "audio_visual_alignment_at_response_start": 4.0,
+      "minimum_allowed_single_sample": 3.0
+    },
+    "guidance": [
+      "Use the same prompt/content across profiles when possible.",
+      "Score best/median/worst sample per profile before cross-profile comparison.",
+      "Record any visible seam transitions around first speaking frames."
+    ]
+  }
+}

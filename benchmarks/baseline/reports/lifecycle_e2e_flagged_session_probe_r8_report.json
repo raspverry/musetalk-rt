@@ -1,0 +1,1054 @@
+{
+  "scenario": {
+    "scenario_id": "lifecycle_e2e_flagged_session_probe_r8",
+    "mode": "warm_start",
+    "adapter": "command",
+    "runs": 8,
+    "timeout_s": 120,
+    "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --policy-config benchmarks/baseline/policies/warm_path_policy.json --policy-mode default --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accept-ms 50 --post-accept-startup-ms 0 --chunk-ms {chunk_ms} --startup-chunks {startup_chunks} --chunk-overhead-ms 8 --cadence-profile fixed --fps 20 --num-frames 20 --disable-frame-write --emit-metrics-json' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --prefer-infer-json --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png' --lifecycle-session-start-cmd 'echo session-start' --lifecycle-avatar-ready-cmd 'echo avatar-ready-fallback' --lifecycle-audio-accepted-cmd 'echo audio-accepted' --enable-limited-real-lifecycle-wiring --allow-proxy-fallback-on-real-wire-failure --real-first-frame-source infer_json --enable-flagged-e2e-session-experiment"
+  },
+  "summary": {
+    "runs": 8,
+    "ok_runs": 8,
+    "partial_runs": 0,
+    "crash_runs": 0,
+    "oom_runs": 0,
+    "avatar_preparation_time_ms": {
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "first_frame_latency_ms": {
+      "mean": 129.031,
+      "p50": 129.088,
+      "p95": 129.153,
+      "min": 128.815,
+      "max": 129.175
+    },
+    "steady_state_fps": {
+      "mean": 18.928,
+      "p50": 18.928,
+      "p95": 18.934,
+      "min": 18.919,
+      "max": 18.934
+    },
+    "peak_vram_mb": {
+      "mean": null,
+      "p50": null,
+      "p95": null,
+      "min": null,
+      "max": null
+    }
+  },
+  "results": [
+    {
+      "run_id": 1,
+      "scenario_id": "lifecycle_e2e_flagged_session_probe_r8",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 129.17470932006836,
+      "steady_state_fps": 18.92328369238251,
+      "peak_vram_mb": null,
+      "duration_ms": 1291.6576862335205,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 120.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 128.0,
+        "frame_jitter_ms": 0.027855514233942797,
+        "chunk_boundary_rate_hz": 8.333333333333334,
+        "continuity_risk_hint": "medium_boundary_churn",
+        "cadence_profile": "fixed",
+        "policy_mode": "default",
+        "policy_selection_source": "policy:default",
+        "policy_chunk_ms": 120,
+        "policy_startup_chunks": 1,
+        "lifecycle_stage_count": 4,
+        "lifecycle_stage_statuses": [
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "lifecycle_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "lifecycle_proxy_fallbacks": [
+          {
+            "stage": "avatar_ready_or_warm_assumed",
+            "reason": "avatar_real_probe_unconfigured"
+          }
+        ],
+        "lifecycle_signals_are_proxy": false,
+        "limited_real_lifecycle_wiring_enabled": true,
+        "flagged_e2e_session_experiment_enabled": true,
+        "proxy_fallback_permissive": true
+      },
+      "lifecycle_stage_outcomes": [
+        {
+          "stage": "session_start",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:48.386997Z",
+          "ended_at": "2026-03-31T07:58:48.394837Z",
+          "duration_ms": 7.838179999453132,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "avatar_ready_or_warm_assumed",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:48.394883Z",
+          "ended_at": "2026-03-31T07:58:48.403164Z",
+          "duration_ms": 8.302113999889116,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_fallback_command",
+          "fallback_from_real_wiring": true,
+          "fallback_reason": "avatar_real_probe_unconfigured"
+        },
+        {
+          "stage": "audio_accepted",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:48.403206Z",
+          "ended_at": "2026-03-31T07:58:48.410069Z",
+          "duration_ms": 6.895009000800201,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "first_speaking_frame_signal",
+          "started_at": "2026-03-31T07:58:49.702445Z",
+          "ended_at": "2026-03-31T07:58:49.702473Z",
+          "duration_ms": 0.005593999958364293,
+          "spawn_mode": "probe",
+          "first_frame_ts": 1774943928.6778357,
+          "first_frame_source_used": "infer_json",
+          "status": "ok",
+          "returncode": 0,
+          "stderr_preview": "",
+          "signal_kind": "real_wired_first_frame_observation"
+        }
+      ],
+      "end_to_end_experiment": {
+        "enabled": true,
+        "status": "ok",
+        "failure_classification": null,
+        "stage_count": 4,
+        "proxy_fallback_count": 1,
+        "stage_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "note": "bounded non-production end-to-end session experiment behind flag"
+      }
+    },
+    {
+      "run_id": 2,
+      "scenario_id": "lifecycle_e2e_flagged_session_probe_r8",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 129.15301322937012,
+      "steady_state_fps": 18.929117983092677,
+      "peak_vram_mb": null,
+      "duration_ms": 1282.4721336364746,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 120.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 128.0,
+        "frame_jitter_ms": 0.025821362392492542,
+        "chunk_boundary_rate_hz": 8.333333333333334,
+        "continuity_risk_hint": "medium_boundary_churn",
+        "cadence_profile": "fixed",
+        "policy_mode": "default",
+        "policy_selection_source": "policy:default",
+        "policy_chunk_ms": 120,
+        "policy_startup_chunks": 1,
+        "lifecycle_stage_count": 4,
+        "lifecycle_stage_statuses": [
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "lifecycle_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "lifecycle_proxy_fallbacks": [
+          {
+            "stage": "avatar_ready_or_warm_assumed",
+            "reason": "avatar_real_probe_unconfigured"
+          }
+        ],
+        "lifecycle_signals_are_proxy": false,
+        "limited_real_lifecycle_wiring_enabled": true,
+        "flagged_e2e_session_experiment_enabled": true,
+        "proxy_fallback_permissive": true
+      },
+      "lifecycle_stage_outcomes": [
+        {
+          "stage": "session_start",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:49.869414Z",
+          "ended_at": "2026-03-31T07:58:49.877513Z",
+          "duration_ms": 8.091260999208316,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "avatar_ready_or_warm_assumed",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:49.877560Z",
+          "ended_at": "2026-03-31T07:58:49.884095Z",
+          "duration_ms": 6.557803000760032,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_fallback_command",
+          "fallback_from_real_wiring": true,
+          "fallback_reason": "avatar_real_probe_unconfigured"
+        },
+        {
+          "stage": "audio_accepted",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:49.884135Z",
+          "ended_at": "2026-03-31T07:58:49.890883Z",
+          "duration_ms": 6.766404998415965,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "first_speaking_frame_signal",
+          "started_at": "2026-03-31T07:58:51.173825Z",
+          "ended_at": "2026-03-31T07:58:51.173861Z",
+          "duration_ms": 0.0054510001064045355,
+          "spawn_mode": "probe",
+          "first_frame_ts": 1774943930.1496305,
+          "first_frame_source_used": "infer_json",
+          "status": "ok",
+          "returncode": 0,
+          "stderr_preview": "",
+          "signal_kind": "real_wired_first_frame_observation"
+        }
+      ],
+      "end_to_end_experiment": {
+        "enabled": true,
+        "status": "ok",
+        "failure_classification": null,
+        "stage_count": 4,
+        "proxy_fallback_count": 1,
+        "stage_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "note": "bounded non-production end-to-end session experiment behind flag"
+      }
+    },
+    {
+      "run_id": 3,
+      "scenario_id": "lifecycle_e2e_flagged_session_probe_r8",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 129.0884017944336,
+      "steady_state_fps": 18.93386268087922,
+      "peak_vram_mb": null,
+      "duration_ms": 1283.2794189453125,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 120.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 128.0,
+        "frame_jitter_ms": 0.02455879033654168,
+        "chunk_boundary_rate_hz": 8.333333333333334,
+        "continuity_risk_hint": "medium_boundary_churn",
+        "cadence_profile": "fixed",
+        "policy_mode": "default",
+        "policy_selection_source": "policy:default",
+        "policy_chunk_ms": 120,
+        "policy_startup_chunks": 1,
+        "lifecycle_stage_count": 4,
+        "lifecycle_stage_statuses": [
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "lifecycle_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "lifecycle_proxy_fallbacks": [
+          {
+            "stage": "avatar_ready_or_warm_assumed",
+            "reason": "avatar_real_probe_unconfigured"
+          }
+        ],
+        "lifecycle_signals_are_proxy": false,
+        "limited_real_lifecycle_wiring_enabled": true,
+        "flagged_e2e_session_experiment_enabled": true,
+        "proxy_fallback_permissive": true
+      },
+      "lifecycle_stage_outcomes": [
+        {
+          "stage": "session_start",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:51.399442Z",
+          "ended_at": "2026-03-31T07:58:51.407358Z",
+          "duration_ms": 7.910483998784912,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "avatar_ready_or_warm_assumed",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:51.407401Z",
+          "ended_at": "2026-03-31T07:58:51.415281Z",
+          "duration_ms": 7.90753000001132,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_fallback_command",
+          "fallback_from_real_wiring": true,
+          "fallback_reason": "avatar_real_probe_unconfigured"
+        },
+        {
+          "stage": "audio_accepted",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:51.415329Z",
+          "ended_at": "2026-03-31T07:58:51.421976Z",
+          "duration_ms": 6.6657070001383545,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "first_speaking_frame_signal",
+          "started_at": "2026-03-31T07:58:52.705826Z",
+          "ended_at": "2026-03-31T07:58:52.705884Z",
+          "duration_ms": 0.006692000170005485,
+          "spawn_mode": "probe",
+          "first_frame_ts": 1774943931.6745515,
+          "first_frame_source_used": "infer_json",
+          "status": "ok",
+          "returncode": 0,
+          "stderr_preview": "",
+          "signal_kind": "real_wired_first_frame_observation"
+        }
+      ],
+      "end_to_end_experiment": {
+        "enabled": true,
+        "status": "ok",
+        "failure_classification": null,
+        "stage_count": 4,
+        "proxy_fallback_count": 1,
+        "stage_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "note": "bounded non-production end-to-end session experiment behind flag"
+      }
+    },
+    {
+      "run_id": 4,
+      "scenario_id": "lifecycle_e2e_flagged_session_probe_r8",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 129.12225723266602,
+      "steady_state_fps": 18.933574783102667,
+      "peak_vram_mb": null,
+      "duration_ms": 1283.97536277771,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 120.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 128.0,
+        "frame_jitter_ms": 0.026786360802840196,
+        "chunk_boundary_rate_hz": 8.333333333333334,
+        "continuity_risk_hint": "medium_boundary_churn",
+        "cadence_profile": "fixed",
+        "policy_mode": "default",
+        "policy_selection_source": "policy:default",
+        "policy_chunk_ms": 120,
+        "policy_startup_chunks": 1,
+        "lifecycle_stage_count": 4,
+        "lifecycle_stage_statuses": [
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "lifecycle_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "lifecycle_proxy_fallbacks": [
+          {
+            "stage": "avatar_ready_or_warm_assumed",
+            "reason": "avatar_real_probe_unconfigured"
+          }
+        ],
+        "lifecycle_signals_are_proxy": false,
+        "limited_real_lifecycle_wiring_enabled": true,
+        "flagged_e2e_session_experiment_enabled": true,
+        "proxy_fallback_permissive": true
+      },
+      "lifecycle_stage_outcomes": [
+        {
+          "stage": "session_start",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:52.922212Z",
+          "ended_at": "2026-03-31T07:58:52.928918Z",
+          "duration_ms": 6.706197000312386,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "avatar_ready_or_warm_assumed",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:52.928960Z",
+          "ended_at": "2026-03-31T07:58:52.935367Z",
+          "duration_ms": 6.428738999602501,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_fallback_command",
+          "fallback_from_real_wiring": true,
+          "fallback_reason": "avatar_real_probe_unconfigured"
+        },
+        {
+          "stage": "audio_accepted",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:52.935407Z",
+          "ended_at": "2026-03-31T07:58:52.941809Z",
+          "duration_ms": 6.417804999728105,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "first_speaking_frame_signal",
+          "started_at": "2026-03-31T07:58:54.226269Z",
+          "ended_at": "2026-03-31T07:58:54.226313Z",
+          "duration_ms": 0.0058149998949375,
+          "spawn_mode": "probe",
+          "first_frame_ts": 1774943933.198647,
+          "first_frame_source_used": "infer_json",
+          "status": "ok",
+          "returncode": 0,
+          "stderr_preview": "",
+          "signal_kind": "real_wired_first_frame_observation"
+        }
+      ],
+      "end_to_end_experiment": {
+        "enabled": true,
+        "status": "ok",
+        "failure_classification": null,
+        "stage_count": 4,
+        "proxy_fallback_count": 1,
+        "stage_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "note": "bounded non-production end-to-end session experiment behind flag"
+      }
+    },
+    {
+      "run_id": 5,
+      "scenario_id": "lifecycle_e2e_flagged_session_probe_r8",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 128.8149356842041,
+      "steady_state_fps": 18.919096727631853,
+      "peak_vram_mb": null,
+      "duration_ms": 1283.0297946929932,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 120.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 128.0,
+        "frame_jitter_ms": 0.1888898499939841,
+        "chunk_boundary_rate_hz": 8.333333333333334,
+        "continuity_risk_hint": "medium_boundary_churn",
+        "cadence_profile": "fixed",
+        "policy_mode": "default",
+        "policy_selection_source": "policy:default",
+        "policy_chunk_ms": 120,
+        "policy_startup_chunks": 1,
+        "lifecycle_stage_count": 4,
+        "lifecycle_stage_statuses": [
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "lifecycle_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "lifecycle_proxy_fallbacks": [
+          {
+            "stage": "avatar_ready_or_warm_assumed",
+            "reason": "avatar_real_probe_unconfigured"
+          }
+        ],
+        "lifecycle_signals_are_proxy": false,
+        "limited_real_lifecycle_wiring_enabled": true,
+        "flagged_e2e_session_experiment_enabled": true,
+        "proxy_fallback_permissive": true
+      },
+      "lifecycle_stage_outcomes": [
+        {
+          "stage": "session_start",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:54.423208Z",
+          "ended_at": "2026-03-31T07:58:54.430324Z",
+          "duration_ms": 7.112086999768508,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "avatar_ready_or_warm_assumed",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:54.430364Z",
+          "ended_at": "2026-03-31T07:58:54.436567Z",
+          "duration_ms": 6.225111999810906,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_fallback_command",
+          "fallback_from_real_wiring": true,
+          "fallback_reason": "avatar_real_probe_unconfigured"
+        },
+        {
+          "stage": "audio_accepted",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:54.436607Z",
+          "ended_at": "2026-03-31T07:58:54.443090Z",
+          "duration_ms": 6.494639999800711,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "first_speaking_frame_signal",
+          "started_at": "2026-03-31T07:58:55.726522Z",
+          "ended_at": "2026-03-31T07:58:55.726566Z",
+          "duration_ms": 0.008846000127959996,
+          "spawn_mode": "probe",
+          "first_frame_ts": 1774943934.6962857,
+          "first_frame_source_used": "infer_json",
+          "status": "ok",
+          "returncode": 0,
+          "stderr_preview": "",
+          "signal_kind": "real_wired_first_frame_observation"
+        }
+      ],
+      "end_to_end_experiment": {
+        "enabled": true,
+        "status": "ok",
+        "failure_classification": null,
+        "stage_count": 4,
+        "proxy_fallback_count": 1,
+        "stage_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "note": "bounded non-production end-to-end session experiment behind flag"
+      }
+    },
+    {
+      "run_id": 6,
+      "scenario_id": "lifecycle_e2e_flagged_session_probe_r8",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 128.93986701965332,
+      "steady_state_fps": 18.926079028452847,
+      "peak_vram_mb": null,
+      "duration_ms": 1284.4281196594238,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 120.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 128.0,
+        "frame_jitter_ms": 0.028152365170260606,
+        "chunk_boundary_rate_hz": 8.333333333333334,
+        "continuity_risk_hint": "medium_boundary_churn",
+        "cadence_profile": "fixed",
+        "policy_mode": "default",
+        "policy_selection_source": "policy:default",
+        "policy_chunk_ms": 120,
+        "policy_startup_chunks": 1,
+        "lifecycle_stage_count": 4,
+        "lifecycle_stage_statuses": [
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "lifecycle_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "lifecycle_proxy_fallbacks": [
+          {
+            "stage": "avatar_ready_or_warm_assumed",
+            "reason": "avatar_real_probe_unconfigured"
+          }
+        ],
+        "lifecycle_signals_are_proxy": false,
+        "limited_real_lifecycle_wiring_enabled": true,
+        "flagged_e2e_session_experiment_enabled": true,
+        "proxy_fallback_permissive": true
+      },
+      "lifecycle_stage_outcomes": [
+        {
+          "stage": "session_start",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:55.941626Z",
+          "ended_at": "2026-03-31T07:58:55.948345Z",
+          "duration_ms": 6.71189099921321,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "avatar_ready_or_warm_assumed",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:55.948382Z",
+          "ended_at": "2026-03-31T07:58:55.954912Z",
+          "duration_ms": 6.547598999532056,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_fallback_command",
+          "fallback_from_real_wiring": true,
+          "fallback_reason": "avatar_real_probe_unconfigured"
+        },
+        {
+          "stage": "audio_accepted",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:55.954950Z",
+          "ended_at": "2026-03-31T07:58:55.960358Z",
+          "duration_ms": 5.415527000877773,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "first_speaking_frame_signal",
+          "started_at": "2026-03-31T07:58:57.245201Z",
+          "ended_at": "2026-03-31T07:58:57.245234Z",
+          "duration_ms": 0.005652000254485756,
+          "spawn_mode": "probe",
+          "first_frame_ts": 1774943936.213415,
+          "first_frame_source_used": "infer_json",
+          "status": "ok",
+          "returncode": 0,
+          "stderr_preview": "",
+          "signal_kind": "real_wired_first_frame_observation"
+        }
+      ],
+      "end_to_end_experiment": {
+        "enabled": true,
+        "status": "ok",
+        "failure_classification": null,
+        "stage_count": 4,
+        "proxy_fallback_count": 1,
+        "stage_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "note": "bounded non-production end-to-end session experiment behind flag"
+      }
+    },
+    {
+      "run_id": 7,
+      "scenario_id": "lifecycle_e2e_flagged_session_probe_r8",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 129.12750244140625,
+      "steady_state_fps": 18.927980508581054,
+      "peak_vram_mb": null,
+      "duration_ms": 1281.925916671753,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 120.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 128.0,
+        "frame_jitter_ms": 0.03399517692565403,
+        "chunk_boundary_rate_hz": 8.333333333333334,
+        "continuity_risk_hint": "medium_boundary_churn",
+        "cadence_profile": "fixed",
+        "policy_mode": "default",
+        "policy_selection_source": "policy:default",
+        "policy_chunk_ms": 120,
+        "policy_startup_chunks": 1,
+        "lifecycle_stage_count": 4,
+        "lifecycle_stage_statuses": [
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "lifecycle_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "lifecycle_proxy_fallbacks": [
+          {
+            "stage": "avatar_ready_or_warm_assumed",
+            "reason": "avatar_real_probe_unconfigured"
+          }
+        ],
+        "lifecycle_signals_are_proxy": false,
+        "limited_real_lifecycle_wiring_enabled": true,
+        "flagged_e2e_session_experiment_enabled": true,
+        "proxy_fallback_permissive": true
+      },
+      "lifecycle_stage_outcomes": [
+        {
+          "stage": "session_start",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:57.474820Z",
+          "ended_at": "2026-03-31T07:58:57.481190Z",
+          "duration_ms": 6.380727001669584,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "avatar_ready_or_warm_assumed",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:57.481244Z",
+          "ended_at": "2026-03-31T07:58:57.486603Z",
+          "duration_ms": 5.3814549992239336,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_fallback_command",
+          "fallback_from_real_wiring": true,
+          "fallback_reason": "avatar_real_probe_unconfigured"
+        },
+        {
+          "stage": "audio_accepted",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:57.486649Z",
+          "ended_at": "2026-03-31T07:58:57.493332Z",
+          "duration_ms": 6.694396999591845,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "first_speaking_frame_signal",
+          "started_at": "2026-03-31T07:58:58.775726Z",
+          "ended_at": "2026-03-31T07:58:58.775760Z",
+          "duration_ms": 0.005357000190997496,
+          "spawn_mode": "probe",
+          "first_frame_ts": 1774943937.7491548,
+          "first_frame_source_used": "infer_json",
+          "status": "ok",
+          "returncode": 0,
+          "stderr_preview": "",
+          "signal_kind": "real_wired_first_frame_observation"
+        }
+      ],
+      "end_to_end_experiment": {
+        "enabled": true,
+        "status": "ok",
+        "failure_classification": null,
+        "stage_count": 4,
+        "proxy_fallback_count": 1,
+        "stage_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "note": "bounded non-production end-to-end session experiment behind flag"
+      }
+    },
+    {
+      "run_id": 8,
+      "scenario_id": "lifecycle_e2e_flagged_session_probe_r8",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 128.82542610168457,
+      "steady_state_fps": 18.92787261295964,
+      "peak_vram_mb": null,
+      "duration_ms": 1283.534288406372,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 120.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 128.0,
+        "frame_jitter_ms": 0.01723837717724313,
+        "chunk_boundary_rate_hz": 8.333333333333334,
+        "continuity_risk_hint": "medium_boundary_churn",
+        "cadence_profile": "fixed",
+        "policy_mode": "default",
+        "policy_selection_source": "policy:default",
+        "policy_chunk_ms": 120,
+        "policy_startup_chunks": 1,
+        "lifecycle_stage_count": 4,
+        "lifecycle_stage_statuses": [
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "lifecycle_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "lifecycle_proxy_fallbacks": [
+          {
+            "stage": "avatar_ready_or_warm_assumed",
+            "reason": "avatar_real_probe_unconfigured"
+          }
+        ],
+        "lifecycle_signals_are_proxy": false,
+        "limited_real_lifecycle_wiring_enabled": true,
+        "flagged_e2e_session_experiment_enabled": true,
+        "proxy_fallback_permissive": true
+      },
+      "lifecycle_stage_outcomes": [
+        {
+          "stage": "session_start",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:58.997809Z",
+          "ended_at": "2026-03-31T07:58:59.003991Z",
+          "duration_ms": 6.157913001516135,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "avatar_ready_or_warm_assumed",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:59.004032Z",
+          "ended_at": "2026-03-31T07:58:59.010195Z",
+          "duration_ms": 6.179730000440031,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_fallback_command",
+          "fallback_from_real_wiring": true,
+          "fallback_reason": "avatar_real_probe_unconfigured"
+        },
+        {
+          "stage": "audio_accepted",
+          "status": "ok",
+          "started_at": "2026-03-31T07:58:59.010230Z",
+          "ended_at": "2026-03-31T07:58:59.016676Z",
+          "duration_ms": 6.458716999986791,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "first_speaking_frame_signal",
+          "started_at": "2026-03-31T07:59:00.300708Z",
+          "ended_at": "2026-03-31T07:59:00.300757Z",
+          "duration_ms": 0.007085000106599182,
+          "spawn_mode": "probe",
+          "first_frame_ts": 1774943939.266046,
+          "first_frame_source_used": "infer_json",
+          "status": "ok",
+          "returncode": 0,
+          "stderr_preview": "",
+          "signal_kind": "real_wired_first_frame_observation"
+        }
+      ],
+      "end_to_end_experiment": {
+        "enabled": true,
+        "status": "ok",
+        "failure_classification": null,
+        "stage_count": 4,
+        "proxy_fallback_count": 1,
+        "stage_signal_kinds": [
+          "proxy_command",
+          "proxy_fallback_command",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "note": "bounded non-production end-to-end session experiment behind flag"
+      }
+    }
+  ],
+  "environment": {
+    "hostname": "e2def8254e7b",
+    "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
+    "python_version": "3.10.19",
+    "gpu_query_available": false
+  },
+  "generated_at_epoch_ms": 1774943940404
+}

@@ -71,14 +71,20 @@ Aggressive policies `(40,1)` and `(80,1)` are kept as experiment-only due to hig
 - Every run records provenance fields to make boundaries explicit, including `infer_spawn_mode`, `file_polling_used`, and chunk continuity hints.
 
 Lifecycle probe signal boundaries:
-- `session_start`: **proxy** command-level stage (not runtime callback binding yet)
+- `session_start`: **proxy by default**, can be **limited real-wired** in flagged mode by observing infer-process spawn/alive window (`--enable-real-session-start-observation`)
 - `avatar_ready_or_warm_assumed`: **proxy** stage by default; can be **limited real-wired** via `--enable-limited-real-lifecycle-wiring --real-avatar-ready-path <path>` (filesystem readiness probe)
-- `audio_accepted`: **proxy or semi-real** depending on marker/event source used by the command
+- `audio_accepted`: **proxy or semi-real**; in flagged real-observation mode it prefers infer JSON `audio_accepted_ts` and then explicit marker-path contract (`--real-audio-accepted-marker-path`)
 - `first_speaking_frame_signal`: **limited real-wired** in flagged mode by observing actual first-frame evidence (`first_frame_ts`) from infer output/file signals
+- if a real-wired stage cannot be observed and `--allow-proxy-fallback-on-real-wire-failure` is set, fallback is explicitly recorded as `signal_kind=proxy_fallback_command` plus `fallback_reason`
 
 Recommendation for limited real MuseTalk wiring:
 - The current lifecycle path is stable enough for **limited, guarded wiring experiments** behind flags.
 - It is **not yet sufficient** for broad production wiring without direct runtime event contracts.
+- The new `--enable-flagged-e2e-session-experiment` path is telemetry-focused and non-production, intended for bounded end-to-end signal verification only.
+
+Proxy fallback permissiveness recommendation:
+- **Keep** proxy fallback permissive for now in flagged experiments (`--allow-proxy-fallback-on-real-wire-failure`) to maximize observability and reduce hard-stop failures while real wiring matures.
+- Revisit toward stricter behavior after repeated stable runs show low fallback frequency.
 
 Flagged limited real wiring example:
 ```bash
@@ -112,3 +118,44 @@ python benchmarks/baseline/run_policy_runtime_facing_validation.py
 ```
 
 This generates `runtime_facing_policy_validation_summary.json`.
+
+## Flagged e2e reliability learning
+Use `run_flagged_e2e_reliability_analysis.py` to run repeated flagged e2e probes and summarize fallback rate + stage failure patterns:
+```bash
+python benchmarks/baseline/run_flagged_e2e_reliability_analysis.py \
+  --scenario benchmarks/baseline/scenarios/lifecycle_e2e_flagged_session_probe.json \
+  --runs 8
+```
+
+Avatar-focused real-wiring follow-up:
+```bash
+python benchmarks/baseline/run_flagged_e2e_reliability_analysis.py \
+  --scenario benchmarks/baseline/scenarios/lifecycle_e2e_flagged_session_probe_avatar_real.json \
+  --runs 8 \
+  --compare-summary benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_r8_reliability_summary.json
+```
+
+## Flagged e2e quality-focused validation (non-production)
+Use `run_flagged_e2e_quality_validation.py` for limited quality-focused checks (continuity/seam/naturalness proxies) while preserving lifecycle signal/fallback transparency:
+```bash
+python benchmarks/baseline/run_flagged_e2e_quality_validation.py \
+  --scenario benchmarks/baseline/scenarios/lifecycle_e2e_flagged_session_probe_audio_session_real.json \
+  --runs 12 \
+  --compare-summary benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_r30_reliability_summary.json
+```
+
+## Flagged human-QA review pack (lightweight)
+Use `run_flagged_e2e_human_qa_pack.py` to create a reproducible reviewer pack with best/median/worst representatives across stable/bursty/jittery profiles plus a simple 1-5 scoring rubric:
+```bash
+python benchmarks/baseline/run_flagged_e2e_human_qa_pack.py \
+  --stable-report benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_qv12_report.json \
+  --bursty-report benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_stress_bursty_qv12_report.json \
+  --jittery-report benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_stress_jittery_qv12_report.json
+```
+
+Then evaluate canary decision readiness from completed scorecards:
+```bash
+python benchmarks/baseline/run_flagged_e2e_human_qa_decision.py \
+  --qa-pack benchmarks/baseline/reports/lifecycle_e2e_flagged_human_qa_pack_v1.json \
+  --scorecard benchmarks/baseline/reports/lifecycle_e2e_flagged_human_qa_pack_v1_scorecard_template.json
+```

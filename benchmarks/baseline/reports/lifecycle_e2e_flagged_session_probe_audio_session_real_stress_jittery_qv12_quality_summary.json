@@ -1,0 +1,92 @@
+{
+  "analysis": "flagged_e2e_quality_validation",
+  "source_report": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_stress_jittery_qv12_report.json",
+  "total_runs": 12,
+  "fallback_runs": 0,
+  "fallback_rate": 0.0,
+  "lifecycle_stage_error_total": 0,
+  "stage_error_counts": {},
+  "stage_signal_kind_counts": {
+    "session_start": {
+      "real_wired_session_start_observation": 12
+    },
+    "avatar_ready_or_warm_assumed": {
+      "real_wired_avatar_probe": 12
+    },
+    "audio_accepted": {
+      "real_wired_audio_accepted_observation": 12
+    },
+    "first_speaking_frame_signal": {
+      "real_wired_first_frame_observation": 12
+    }
+  },
+  "quality_metrics": {
+    "first_frame_latency_ms": {
+      "p50": 283.7337255477905,
+      "p95": 283.84934663772583,
+      "spread_ms": 0.25725364685058594
+    },
+    "steady_state_fps": {
+      "p50": 5.313127412722296,
+      "p95": 5.313476137979267,
+      "spread_fps": 0.01623078254270638
+    },
+    "frame_jitter_ms": {
+      "p50": 55.34099523986082,
+      "p95": 55.73499584798925,
+      "max": 56.16993441906665
+    },
+    "continuity_risk_hint_counts": {
+      "high_boundary_churn": 12
+    },
+    "continuity_risk_basis_counts": {
+      "policy_plus_observed_instability": 12
+    },
+    "cadence_profile_counts": {
+      "jittery": 12
+    }
+  },
+  "observations": [
+    "No lifecycle fallback or stage errors observed in this quality validation pass.",
+    "TTS cadence sensitivity sampled only for cadence profile: jittery."
+  ],
+  "limitations": [
+    "Proxy/fixture approximation cannot replace human MOS-style naturalness review.",
+    "No network/mobile jitter injection in this pass; cadence sensitivity is approximation-only.",
+    "Seam/continuity and first-response naturalness conclusions are telemetry-guided, not perceptual ground truth."
+  ],
+  "recommendation_warn_only_canary": "safe_to_try_warn_only_canary",
+  "next_validation_under_jitter": [
+    "Inject bursty + delayed chunk arrival with random jitter envelopes (e.g. 20-200ms) and rerun stage/error tracking.",
+    "Run mixed cadence profiles (fixed, tts_bursty, jittery) while checking seam artifacts and first response stability.",
+    "Add packet-loss/drop simulation to validate fallback transparency and quality degradation boundaries."
+  ],
+  "comparison": {
+    "compare_summary": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_qv12_quality_summary.json",
+    "before_fallback_rate": 0.0,
+    "after_fallback_rate": 0.0,
+    "before_stage_signal_mix": {},
+    "after_stage_signal_mix": {
+      "session_start": {
+        "signal_kind_counts": {
+          "real_wired_session_start_observation": 12
+        }
+      },
+      "avatar_ready_or_warm_assumed": {
+        "signal_kind_counts": {
+          "real_wired_avatar_probe": 12
+        }
+      },
+      "audio_accepted": {
+        "signal_kind_counts": {
+          "real_wired_audio_accepted_observation": 12
+        }
+      },
+      "first_speaking_frame_signal": {
+        "signal_kind_counts": {
+          "real_wired_first_frame_observation": 12
+        }
+      }
+    }
+  }
+}

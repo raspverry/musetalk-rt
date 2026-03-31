@@ -1,0 +1,150 @@
+{
+  "analysis": "flagged_e2e_reliability",
+  "source_report": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_avatar_real_r30_report.json",
+  "total_runs": 30,
+  "runs_with_fallback": 0,
+  "fallback_rate": 0.0,
+  "stage_failure_counts": {},
+  "stage_signal_mix": {
+    "session_start": {
+      "total": 30,
+      "signal_kind_counts": {
+        "proxy_command": 30
+      },
+      "bucket_rates": {
+        "real_wired": 0.0,
+        "proxy": 1.0,
+        "fallback": 0.0
+      },
+      "error_count": 0
+    },
+    "avatar_ready_or_warm_assumed": {
+      "total": 30,
+      "signal_kind_counts": {
+        "real_wired_avatar_probe": 30
+      },
+      "bucket_rates": {
+        "real_wired": 1.0,
+        "proxy": 0.0,
+        "fallback": 0.0
+      },
+      "error_count": 0
+    },
+    "audio_accepted": {
+      "total": 30,
+      "signal_kind_counts": {
+        "proxy_command": 30
+      },
+      "bucket_rates": {
+        "real_wired": 0.0,
+        "proxy": 1.0,
+        "fallback": 0.0
+      },
+      "error_count": 0
+    },
+    "first_speaking_frame_signal": {
+      "total": 30,
+      "signal_kind_counts": {
+        "real_wired_first_frame_observation": 30
+      },
+      "bucket_rates": {
+        "real_wired": 1.0,
+        "proxy": 0.0,
+        "fallback": 0.0
+      },
+      "error_count": 0
+    }
+  },
+  "recommendation_fallback_tightening": "Eligible to trial stricter fallback (warn-only fallback) in canary flagged runs.",
+  "next_stage_to_deepen": "avatar_ready_or_warm_assumed",
+  "notes": {
+    "non_production": true,
+    "scope": "telemetry-only reliability learning"
+  },
+  "qa_checklist": [
+    "Verify response-start feels prompt (first speaking frame timing within expected envelope).",
+    "Spot-check seam/continuity artifacts around response onset.",
+    "Confirm no obvious audio/video desync at first speaking frame.",
+    "Record whether fallback stage was user-visible in perceived startup quality."
+  ],
+  "comparison": {
+    "compare_summary": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_avatar_real_r8_reliability_summary.json",
+    "before_fallback_rate": 0.0,
+    "after_fallback_rate": 0.0,
+    "delta_fallback_rate": 0.0,
+    "stage_signal_mix_compare": {
+      "audio_accepted": {
+        "before_signal_kind_counts": {
+          "proxy_command": 8
+        },
+        "after_signal_kind_counts": {
+          "proxy_command": 30
+        },
+        "before_bucket_rates": {
+          "real_wired": 0.0,
+          "proxy": 1.0,
+          "fallback": 0.0
+        },
+        "after_bucket_rates": {
+          "real_wired": 0.0,
+          "proxy": 1.0,
+          "fallback": 0.0
+        }
+      },
+      "avatar_ready_or_warm_assumed": {
+        "before_signal_kind_counts": {
+          "real_wired_avatar_probe": 8
+        },
+        "after_signal_kind_counts": {
+          "real_wired_avatar_probe": 30
+        },
+        "before_bucket_rates": {
+          "real_wired": 1.0,
+          "proxy": 0.0,
+          "fallback": 0.0
+        },
+        "after_bucket_rates": {
+          "real_wired": 1.0,
+          "proxy": 0.0,
+          "fallback": 0.0
+        }
+      },
+      "first_speaking_frame_signal": {
+        "before_signal_kind_counts": {
+          "real_wired_first_frame_observation": 8
+        },
+        "after_signal_kind_counts": {
+          "real_wired_first_frame_observation": 30
+        },
+        "before_bucket_rates": {
+          "real_wired": 1.0,
+          "proxy": 0.0,
+          "fallback": 0.0
+        },
+        "after_bucket_rates": {
+          "real_wired": 1.0,
+          "proxy": 0.0,
+          "fallback": 0.0
+        }
+      },
+      "session_start": {
+        "before_signal_kind_counts": {
+          "proxy_command": 8
+        },
+        "after_signal_kind_counts": {
+          "proxy_command": 30
+        },
+        "before_bucket_rates": {
+          "real_wired": 0.0,
+          "proxy": 1.0,
+          "fallback": 0.0
+        },
+        "after_bucket_rates": {
+          "real_wired": 0.0,
+          "proxy": 1.0,
+          "fallback": 0.0
+        }
+      }
+    }
+  }
+}

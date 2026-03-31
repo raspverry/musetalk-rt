@@ -1,49 +1,48 @@
-# MuseTalk-RT Documentation Pack
+# MuseTalk-RT (Flagged, Non-Production Evaluation Toolkit)
 
-This pack is a working documentation set for a **server-first, perception-real-time avatar product** built by forking and productizing MuseTalk.
+- Language: **English** | [한국어](README.ko.md) | [日本語](README.ja.md)
 
-## Project intent
-Turn MuseTalk from a research-style lip-sync repository into a production-oriented runtime for:
-- fixed-avatar conversational agents
-- idle-loop based avatar playback
-- server-side lip-sync generation
-- low-latency iPhone app streaming
+## What is this project?
+MuseTalk-RT is a **local evaluation and QA toolkit** for testing MuseTalk-style session startup and continuity behavior.
+It is not a production app. It helps teams compare stable vs disturbed conditions, review lifecycle telemetry, run human QA, and make guarded canary decisions.
 
-## What is in this pack
-- strategy docs
-- agent operating docs for Claude Code / Codex
-- runtime API and playback specs
-- benchmark / evaluation specs
-- refactor and optimization plans
-- training / research notes
-- ADRs for major decisions
-- a `program.md` file inspired by `autoresearch`
+## Current maturity / status
+- ✅ Strong flagged reliability and stress telemetry workflows.
+- ✅ Human-QA pack + canary decision layer are in place.
+- ⚠️ Still **experimental** for product-readiness claims; broader readiness requires repeated human scores and agreement analysis.
 
-## Recommended reading order
-1. `docs/00_strategy/PROJECT_BRIEF.md`
-2. `docs/00_strategy/PRODUCT_REQUIREMENTS.md`
-3. `docs/00_strategy/TECHNICAL_ARCHITECTURE.md`
-4. `docs/01_agent_ops/AGENT_OPERATING_MANUAL.md`
-5. `docs/02_eval/EVALUATION_SPEC.md`
-6. `docs/03_runtime/RUNTIME_API_SPEC.md`
-7. `program.md`
+## Typical workflow
+1. Read [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md).
+2. Run flagged reliability/quality scenarios via `benchmarks/baseline`.
+3. Build QA pack: `run_flagged_e2e_human_qa_pack.py`.
+4. Fill scorecard template.
+5. Evaluate decision: `run_flagged_e2e_human_qa_decision.py`.
+6. Review `GO_WARN_ONLY_CANARY / WARN_ONLY_HOLD / NO_GO` outputs.
 
-## Current assumptions
-- Phase 1 target is **server-side inference**, not full iPhone on-device inference.
-- The product goal is **perceived real-time**, not zero-latency full-video generation.
-- A single avatar is prepared once and reused across a session.
-- Idle motion is looped continuously and speaking frames are streamed on top of that interaction model.
-- Claude Code / Codex are expected to be used aggressively, but only inside a tightly scoped evaluation harness.
+## What is still experimental?
+- Proxy fixtures (`approx_infer.py`, `approx_prep.py`) are not full runtime streaming integration.
+- Visual/perceptual quality claims require human review evidence.
+- Canary guidance is explicitly **flagged non-production**.
 
-## Upstream references
-- MuseTalk upstream repo: https://github.com/TMElyralab/MuseTalk
-- MuseTalk technical report: https://arxiv.org/abs/2410.10122
-- autoresearch repo: https://github.com/karpathy/autoresearch
-- Core ML overview: https://developer.apple.com/machine-learning/core-ml/
+## How to run QA
+See [docs/QA_WORKFLOW.md](docs/QA_WORKFLOW.md).
 
-## Important note
-Some sections in this pack are intentionally written as **decision-ready operating assumptions**, not as immutable truths. Where the upstream codebase or product direction changes, update:
-- ADRs
-- evaluation gates
-- benchmark dataset spec
-- runtime API spec
+## How to interpret decisions
+See [docs/REPORTS_AND_DECISIONS.md](docs/REPORTS_AND_DECISIONS.md).
+
+## Local GUI (Streamlit)
+A lightweight local dashboard is available at `app/qa_dashboard.py`.
+
+```bash
+pip install streamlit
+streamlit run app/qa_dashboard.py
+```
+
+The GUI is local-only and intended for report browsing, QA scoring support, and decision review.
+
+## New teammate: read this first (10-minute path)
+1. [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)
+2. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+3. [docs/QA_WORKFLOW.md](docs/QA_WORKFLOW.md)
+4. [docs/REPORTS_AND_DECISIONS.md](docs/REPORTS_AND_DECISIONS.md)
+5. [docs/CLI_USAGE.md](docs/CLI_USAGE.md)

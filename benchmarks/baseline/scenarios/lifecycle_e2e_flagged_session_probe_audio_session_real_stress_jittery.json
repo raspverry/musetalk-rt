@@ -1,0 +1,8 @@
+{
+  "scenario_id": "lifecycle_e2e_flagged_session_probe_audio_session_real_stress_jittery",
+  "mode": "warm_start",
+  "adapter": "command",
+  "runs": 1,
+  "timeout_s": 120,
+  "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --policy-config benchmarks/baseline/policies/warm_path_policy.json --policy-mode default --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accepted-marker benchmarks/baseline/tmp/audio_accepted.marker --audio-accept-ms 50 --post-accept-startup-ms 0 --chunk-ms {chunk_ms} --startup-chunks {startup_chunks} --chunk-overhead-ms 8 --cadence-profile jittery --jitter-min-ms 20 --jitter-max-ms 200 --first-chunk-delay-ms 180 --drop-rate 0.08 --random-seed 17 --fps 20 --num-frames 20 --disable-frame-write --emit-metrics-json' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --audio-accepted-marker benchmarks/baseline/tmp/audio_accepted.marker --prefer-infer-json --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png' --cleanup-path benchmarks/baseline/tmp/audio_accepted.marker --lifecycle-avatar-ready-cmd 'echo avatar-ready-fallback' --enable-limited-real-lifecycle-wiring --real-avatar-ready-path runtime/session/README.md --allow-proxy-fallback-on-real-wire-failure --real-first-frame-source infer_json --enable-real-session-start-observation --enable-real-audio-accepted-observation --real-audio-accepted-marker-path benchmarks/baseline/tmp/audio_accepted.marker --enable-flagged-e2e-session-experiment"
+}

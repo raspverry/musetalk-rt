@@ -95,6 +95,16 @@ def main() -> None:
                         fail(f"run[{idx}] lifecycle_stage_outcomes[{sidx}] missing key: {key}")
                 if stage["status"] not in {"ok", "error"}:
                     fail(f"run[{idx}] lifecycle_stage_outcomes[{sidx}] invalid status: {stage['status']}")
+                if stage["status"] == "error" and "failure_reason" not in stage:
+                    fail(f"run[{idx}] lifecycle_stage_outcomes[{sidx}] error requires failure_reason")
+
+        e2e = run.get("end_to_end_experiment")
+        if e2e is not None:
+            for key in ["enabled", "status", "failure_classification", "note"]:
+                if key not in e2e:
+                    fail(f"run[{idx}] end_to_end_experiment missing key: {key}")
+            if e2e["status"] not in {"ok", "error", "not_enabled"}:
+                fail(f"run[{idx}] end_to_end_experiment invalid status: {e2e['status']}")
 
     print(json.dumps({"report": str(args.report), "validation": "ok"}))
 

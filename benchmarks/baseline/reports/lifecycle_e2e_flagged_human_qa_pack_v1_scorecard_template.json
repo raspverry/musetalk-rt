@@ -1,0 +1,106 @@
+{
+  "pack_id": "lifecycle_e2e_flagged_human_qa_pack_v1",
+  "reviewers": [],
+  "scores": [
+    {
+      "reviewer_id": "",
+      "profile": "stable",
+      "representative": "best",
+      "run_index": 10,
+      "continuity_seam_perception": null,
+      "first_response_naturalness": null,
+      "speaking_stability": null,
+      "audio_visual_alignment_at_response_start": null,
+      "notes": ""
+    },
+    {
+      "reviewer_id": "",
+      "profile": "stable",
+      "representative": "median",
+      "run_index": 2,
+      "continuity_seam_perception": null,
+      "first_response_naturalness": null,
+      "speaking_stability": null,
+      "audio_visual_alignment_at_response_start": null,
+      "notes": ""
+    },
+    {
+      "reviewer_id": "",
+      "profile": "stable",
+      "representative": "worst",
+      "run_index": 3,
+      "continuity_seam_perception": null,
+      "first_response_naturalness": null,
+      "speaking_stability": null,
+      "audio_visual_alignment_at_response_start": null,
+      "notes": ""
+    },
+    {
+      "reviewer_id": "",
+      "profile": "bursty",
+      "representative": "best",
+      "run_index": 1,
+      "continuity_seam_perception": null,
+      "first_response_naturalness": null,
+      "speaking_stability": null,
+      "audio_visual_alignment_at_response_start": null,
+      "notes": ""
+    },
+    {
+      "reviewer_id": "",
+      "profile": "bursty",
+      "representative": "median",
+      "run_index": 9,
+      "continuity_seam_perception": null,
+      "first_response_naturalness": null,
+      "speaking_stability": null,
+      "audio_visual_alignment_at_response_start": null,
+      "notes": ""
+    },
+    {
+      "reviewer_id": "",
+      "profile": "bursty",
+      "representative": "worst",
+      "run_index": 8,
+      "continuity_seam_perception": null,
+      "first_response_naturalness": null,
+      "speaking_stability": null,
+      "audio_visual_alignment_at_response_start": null,
+      "notes": ""
+    },
+    {
+      "reviewer_id": "",
+      "profile": "jittery",
+      "representative": "best",
+      "run_index": 2,
+      "continuity_seam_perception": null,
+      "first_response_naturalness": null,
+      "speaking_stability": null,
+      "audio_visual_alignment_at_response_start": null,
+      "notes": ""
+    },
+    {
+      "reviewer_id": "",
+      "profile": "jittery",
+      "representative": "median",
+      "run_index": 8,
+      "continuity_seam_perception": null,
+      "first_response_naturalness": null,
+      "speaking_stability": null,
+      "audio_visual_alignment_at_response_start": null,
+      "notes": ""
+    },
+    {
+      "reviewer_id": "",
+      "profile": "jittery",
+      "representative": "worst",
+      "run_index": 4,
+      "continuity_seam_perception": null,
+      "first_response_naturalness": null,
+      "speaking_stability": null,
+      "audio_visual_alignment_at_response_start": null,
+      "notes": ""
+    }
+  ],
+  "notes": "Fill one score row per reviewer x profile x representative."
+}

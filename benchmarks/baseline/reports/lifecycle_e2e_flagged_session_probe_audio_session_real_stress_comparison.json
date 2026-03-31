@@ -1,0 +1,51 @@
+{
+  "comparison": "stable_vs_stress_continuity_behavior",
+  "baseline": {
+    "source": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_qv12_quality_summary.json",
+    "continuity_hints": {
+      "lower_boundary_churn": 12
+    },
+    "continuity_basis": {
+      "policy_plus_observed_stability": 12
+    },
+    "frame_jitter_ms": {
+      "p50": 0.021697341960578088,
+      "p95": 0.05035846094470439,
+      "max": 0.053005640567417196
+    },
+    "fallback_rate": 0.0,
+    "lifecycle_stage_error_total": 0
+  },
+  "stress_bursty": {
+    "source": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_stress_bursty_qv12_quality_summary.json",
+    "continuity_hints": {
+      "medium_plus_bursty": 12
+    },
+    "continuity_basis": {
+      "policy_threshold": 12
+    },
+    "frame_jitter_ms": {
+      "p50": 47.07413785265591,
+      "p95": 47.092671753181676,
+      "max": 47.10522547837405
+    },
+    "fallback_rate": 0.0,
+    "lifecycle_stage_error_total": 0
+  },
+  "stress_jittery": {
+    "source": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_stress_jittery_qv12_quality_summary.json",
+    "continuity_hints": {
+      "high_boundary_churn": 12
+    },
+    "continuity_basis": {
+      "policy_plus_observed_instability": 12
+    },
+    "frame_jitter_ms": {
+      "p50": 55.34099523986082,
+      "p95": 55.73499584798925,
+      "max": 56.16993441906665
+    },
+    "fallback_rate": 0.0,
+    "lifecycle_stage_error_total": 0
+  }
+}
