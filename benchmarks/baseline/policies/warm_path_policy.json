@@ -1,0 +1,29 @@
+{
+  "default": {
+    "chunk_ms": 120,
+    "startup_chunks": 1,
+    "selection_reason": "balanced latency vs continuity risk from proxy grid"
+  },
+  "fallback": {
+    "chunk_ms": 160,
+    "startup_chunks": 2,
+    "selection_reason": "stability-oriented fallback for jittery or unstable sessions"
+  },
+  "aggressive_not_default": [
+    {
+      "chunk_ms": 40,
+      "startup_chunks": 1,
+      "reason": "high boundary churn risk"
+    },
+    {
+      "chunk_ms": 80,
+      "startup_chunks": 1,
+      "reason": "high boundary churn risk"
+    }
+  ],
+  "fallback_triggers": [
+    "repeated warm-stream continuity artifacts",
+    "high chunk arrival jitter from TTS/session pipeline",
+    "elevated partial/error outcomes with default policy"
+  ]
+}

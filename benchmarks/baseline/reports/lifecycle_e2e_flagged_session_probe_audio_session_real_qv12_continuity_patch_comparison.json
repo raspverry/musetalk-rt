@@ -1,0 +1,40 @@
+{
+  "comparison": "quality_qv12_before_after_patch",
+  "before_ref": "HEAD:benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_qv12_quality_summary.json",
+  "after_ref": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_qv12_quality_summary.json",
+  "continuity_risk_hint_counts_before": {
+    "medium_boundary_churn": 12
+  },
+  "continuity_risk_hint_counts_after": {
+    "lower_boundary_churn": 12
+  },
+  "continuity_risk_basis_counts_after": {
+    "policy_plus_observed_stability": 12
+  },
+  "frame_jitter_ms_before": {
+    "p50": 0.023682068257094117,
+    "p95": 0.353542656650261,
+    "max": 0.569332773809483
+  },
+  "frame_jitter_ms_after": {
+    "p50": 0.021697341960578088,
+    "p95": 0.05035846094470439,
+    "max": 0.053005640567417196
+  },
+  "first_frame_latency_ms_before": {
+    "p50": 129.1748285293579,
+    "p95": 129.4155478477478,
+    "spread_ms": 0.44274330139160156
+  },
+  "first_frame_latency_ms_after": {
+    "p50": 129.19974327087402,
+    "p95": 129.45324182510376,
+    "spread_ms": 0.4799365997314453
+  },
+  "fallback_rate_before": 0.0,
+  "fallback_rate_after": 0.0,
+  "lifecycle_stage_error_total_before": 0,
+  "lifecycle_stage_error_total_after": 0,
+  "warn_only_recommendation_before": "safe_to_try_warn_only_canary",
+  "warn_only_recommendation_after": "safe_to_try_warn_only_canary"
+}

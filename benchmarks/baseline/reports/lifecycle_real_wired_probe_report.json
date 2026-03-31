@@ -1,0 +1,154 @@
+{
+  "scenario": {
+    "scenario_id": "lifecycle_real_wired_probe",
+    "mode": "warm_start",
+    "adapter": "command",
+    "runs": 1,
+    "timeout_s": 120,
+    "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --policy-config benchmarks/baseline/policies/warm_path_policy.json --policy-mode default --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accept-ms 50 --post-accept-startup-ms 0 --chunk-ms {chunk_ms} --startup-chunks {startup_chunks} --chunk-overhead-ms 8 --cadence-profile fixed --fps 20 --num-frames 20 --disable-frame-write --emit-metrics-json' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --prefer-infer-json --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png' --lifecycle-session-start-cmd 'echo session-start' --lifecycle-audio-accepted-cmd 'echo audio-accepted' --enable-limited-real-lifecycle-wiring --real-avatar-ready-path runtime/session/README.md"
+  },
+  "summary": {
+    "runs": 1,
+    "ok_runs": 1,
+    "partial_runs": 0,
+    "crash_runs": 0,
+    "oom_runs": 0,
+    "avatar_preparation_time_ms": {
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "first_frame_latency_ms": {
+      "mean": 129.502,
+      "p50": 129.502,
+      "p95": 129.502,
+      "min": 129.502,
+      "max": 129.502
+    },
+    "steady_state_fps": {
+      "mean": 18.85,
+      "p50": 18.85,
+      "p95": 18.85,
+      "min": 18.85,
+      "max": 18.85
+    },
+    "peak_vram_mb": {
+      "mean": null,
+      "p50": null,
+      "p95": null,
+      "min": null,
+      "max": null
+    }
+  },
+  "results": [
+    {
+      "run_id": 1,
+      "scenario_id": "lifecycle_real_wired_probe",
+      "mode": "warm_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 0.0,
+      "first_frame_latency_ms": 129.5015811920166,
+      "steady_state_fps": 18.84988596652653,
+      "peak_vram_mb": null,
+      "duration_ms": 1348.9203453063965,
+      "error_message": null,
+      "measurement_provenance": {
+        "mode": "warm_start",
+        "avatar_preparation_time_ms": "warm_path_prep_skipped_zero",
+        "first_frame_latency_ms": "first_frame_ts_minus_audio_accepted_marker",
+        "first_frame_latency_anchor": "audio_accepted_marker",
+        "audio_accepted_marker_present": true,
+        "steady_state_fps": "infer_json_steady_state_fps",
+        "peak_vram_mb": "nvidia_smi_sampled_max",
+        "frame_source": "in_memory_no_file_write",
+        "infer_spawn_mode": "exec",
+        "prep_spawn_mode": null,
+        "file_polling_used": false,
+        "ffmpeg_in_hot_path_cmd": false,
+        "chunk_ms": 120.0,
+        "startup_chunks": 1,
+        "chunk_overhead_ms": 8.0,
+        "startup_delay_ms": 128.0,
+        "frame_jitter_ms": 0.7701081493792743,
+        "chunk_boundary_rate_hz": 8.333333333333334,
+        "continuity_risk_hint": "medium_boundary_churn",
+        "cadence_profile": "fixed",
+        "policy_mode": "default",
+        "policy_selection_source": "policy:default",
+        "policy_chunk_ms": 120,
+        "policy_startup_chunks": 1,
+        "lifecycle_stage_count": 4,
+        "lifecycle_stage_statuses": [
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "lifecycle_signal_kinds": [
+          "proxy_command",
+          "real_wired_path_probe",
+          "proxy_command",
+          "real_wired_first_frame_observation"
+        ],
+        "lifecycle_signals_are_proxy": false,
+        "limited_real_lifecycle_wiring_enabled": true
+      },
+      "lifecycle_stage_outcomes": [
+        {
+          "stage": "session_start",
+          "status": "ok",
+          "started_at": "2026-03-31T06:40:15.339256Z",
+          "ended_at": "2026-03-31T06:40:15.351534Z",
+          "duration_ms": 12.232506999680481,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "avatar_ready_or_warm_assumed",
+          "status": "ok",
+          "started_at": "2026-03-31T06:40:15.351571Z",
+          "ended_at": "2026-03-31T06:40:15.351598Z",
+          "duration_ms": 0.02618100006657187,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "probe",
+          "signal_kind": "real_wired_path_probe"
+        },
+        {
+          "stage": "audio_accepted",
+          "status": "ok",
+          "started_at": "2026-03-31T06:40:15.351605Z",
+          "ended_at": "2026-03-31T06:40:15.360373Z",
+          "duration_ms": 8.783346999734931,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "exec",
+          "signal_kind": "proxy_command"
+        },
+        {
+          "stage": "first_speaking_frame_signal",
+          "status": "ok",
+          "started_at": "2026-03-31T06:40:16.709921Z",
+          "ended_at": "2026-03-31T06:40:16.709958Z",
+          "duration_ms": 0.005899000825593248,
+          "returncode": 0,
+          "stderr_preview": "",
+          "spawn_mode": "probe",
+          "signal_kind": "real_wired_first_frame_observation",
+          "first_frame_ts": 1774939215.6749303
+        }
+      ]
+    }
+  ],
+  "environment": {
+    "hostname": "283fbca6955e",
+    "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
+    "python_version": "3.10.19",
+    "gpu_query_available": false
+  },
+  "generated_at_epoch_ms": 1774939216779
+}

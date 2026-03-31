@@ -1,0 +1,83 @@
+{
+  "scenario": {
+    "scenario_id": "real_cold_start_local",
+    "mode": "cold_start",
+    "adapter": "command",
+    "runs": 3,
+    "timeout_s": 120,
+    "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode cold_start --prep-cmd 'python benchmarks/baseline/fixtures/approx_prep.py --sleep-ms 1400 --cache-flag benchmarks/baseline/tmp/avatar.cache' --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --startup-ms 700 --fps 23 --num-frames 50' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png'"
+  },
+  "summary": {
+    "runs": 3,
+    "ok_runs": 3,
+    "crash_runs": 0,
+    "oom_runs": 0,
+    "avatar_preparation_time_ms": {
+      "mean": 1463.33,
+      "p50": 1464.603,
+      "p95": 1464.603,
+      "min": 1459.608,
+      "max": 1465.78
+    },
+    "first_frame_latency_ms": {
+      "mean": 751.371,
+      "p50": 752.909,
+      "p95": 752.909,
+      "min": 745.504,
+      "max": 755.701
+    },
+    "steady_state_fps": {
+      "mean": 22.812,
+      "p50": 22.812,
+      "p95": 22.812,
+      "min": 22.812,
+      "max": 22.812
+    },
+    "peak_vram_mb": {
+      "mean": null,
+      "p50": null,
+      "p95": null,
+      "min": null,
+      "max": null
+    }
+  },
+  "results": [
+    {
+      "run_id": 1,
+      "scenario_id": "real_cold_start_local",
+      "mode": "cold_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 1464.602826000032,
+      "first_frame_latency_ms": 755.7010650634766,
+      "steady_state_fps": 22.812163651919334,
+      "peak_vram_mb": null,
+      "duration_ms": 2954.8416137695312,
+      "error_message": null
+    },
+    {
+      "run_id": 2,
+      "scenario_id": "real_cold_start_local",
+      "mode": "cold_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 1465.7802570000058,
+      "first_frame_latency_ms": 752.9091835021973,
+      "steady_state_fps": 22.81216618399699,
+      "peak_vram_mb": null,
+      "duration_ms": 2954.2481899261475,
+      "error_message": null
+    },
+    {
+      "run_id": 3,
+      "scenario_id": "real_cold_start_local",
+      "mode": "cold_start",
+      "status": "ok",
+      "avatar_preparation_time_ms": 1459.6076169999606,
+      "first_frame_latency_ms": 745.5039024353027,
+      "steady_state_fps": 22.812163651919334,
+      "peak_vram_mb": null,
+      "duration_ms": 2946.99764251709,
+      "error_message": null
+    }
+  ],
+  "generated_at_epoch_ms": 1774856654680
+}

@@ -1,0 +1,70 @@
+{
+  "analysis": "flagged_e2e_reliability",
+  "source_report": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_r8_report.json",
+  "total_runs": 8,
+  "runs_with_fallback": 8,
+  "fallback_rate": 1.0,
+  "stage_failure_counts": {},
+  "stage_signal_mix": {
+    "session_start": {
+      "total": 8,
+      "signal_kind_counts": {
+        "proxy_command": 8
+      },
+      "bucket_rates": {
+        "real_wired": 0.0,
+        "proxy": 1.0,
+        "fallback": 0.0
+      },
+      "error_count": 0
+    },
+    "avatar_ready_or_warm_assumed": {
+      "total": 8,
+      "signal_kind_counts": {
+        "proxy_fallback_command": 8
+      },
+      "bucket_rates": {
+        "real_wired": 0.0,
+        "proxy": 0.0,
+        "fallback": 1.0
+      },
+      "error_count": 0
+    },
+    "audio_accepted": {
+      "total": 8,
+      "signal_kind_counts": {
+        "proxy_command": 8
+      },
+      "bucket_rates": {
+        "real_wired": 0.0,
+        "proxy": 1.0,
+        "fallback": 0.0
+      },
+      "error_count": 0
+    },
+    "first_speaking_frame_signal": {
+      "total": 8,
+      "signal_kind_counts": {
+        "real_wired_first_frame_observation": 8
+      },
+      "bucket_rates": {
+        "real_wired": 1.0,
+        "proxy": 0.0,
+        "fallback": 0.0
+      },
+      "error_count": 0
+    }
+  },
+  "recommendation_fallback_tightening": "Do not tighten yet. Keep fallback permissive until >=30 flagged runs with fallback_rate < 0.10 and zero lifecycle stage errors.",
+  "next_stage_to_deepen": "avatar_ready_or_warm_assumed",
+  "notes": {
+    "non_production": true,
+    "scope": "telemetry-only reliability learning"
+  },
+  "qa_checklist": [
+    "Verify response-start feels prompt (first speaking frame timing within expected envelope).",
+    "Spot-check seam/continuity artifacts around response onset.",
+    "Confirm no obvious audio/video desync at first speaking frame.",
+    "Record whether fallback stage was user-visible in perceived startup quality."
+  ]
+}

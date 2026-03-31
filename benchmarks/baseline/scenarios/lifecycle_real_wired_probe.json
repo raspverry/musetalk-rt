@@ -1,0 +1,8 @@
+{
+  "scenario_id": "lifecycle_real_wired_probe",
+  "mode": "warm_start",
+  "adapter": "command",
+  "runs": 1,
+  "timeout_s": 120,
+  "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --policy-config benchmarks/baseline/policies/warm_path_policy.json --policy-mode default --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accept-ms 50 --post-accept-startup-ms 0 --chunk-ms {chunk_ms} --startup-chunks {startup_chunks} --chunk-overhead-ms 8 --cadence-profile fixed --fps 20 --num-frames 20 --disable-frame-write --emit-metrics-json' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --prefer-infer-json --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png' --lifecycle-session-start-cmd 'echo session-start' --lifecycle-audio-accepted-cmd 'echo audio-accepted' --enable-limited-real-lifecycle-wiring --real-avatar-ready-path runtime/session/README.md"
+}
