@@ -36,13 +36,13 @@ Aggressive non-default:
 
 ## Runtime-facing validation step (proxy approximation)
 Generated reports:
-- `runtime_facing_default_tts_bursty_cm120_sc1_report.json`
-- `runtime_facing_fallback_tts_bursty_cm160_sc2_report.json`
+- `runtime_facing_default_tts_bursty_report.json`
+- `runtime_facing_fallback_tts_bursty_report.json`
 - summary: `runtime_facing_policy_validation_summary.json`
 
 Observed means:
-- Default `(120,1)` first-frame latency: `103.258 ms`
-- Fallback `(160,2)` first-frame latency: `362.321 ms`
+- Default `(120,1)` first-frame latency: `104.559 ms`
+- Fallback `(160,2)` first-frame latency: `362.248 ms`
 - Both scenarios: all runs `ok`
 
 Interpretation:

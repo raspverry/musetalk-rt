@@ -6,6 +6,13 @@ This is wrapper-level instrumentation only (no runtime optimization).
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 import argparse
 import glob
 import json
@@ -13,7 +20,10 @@ import os
 import shlex
 import subprocess
 import time
-from typing import Dict, Optional
+from datetime import datetime, timezone
+from typing import Dict, Optional, List
+
+from runtime.session.warm_path_policy import resolve_policy
 
 OOM_PATTERNS = ("out of memory", "cuda oom", "cudnn_status_alloc_failed")
 SHELL_META = set("|&;<>()$`\\\n")
@@ -52,6 +62,62 @@ def run_cmd(command: str, timeout_s: float) -> Dict[str, object]:
         "stderr": stderr,
         "duration_ms": (time.perf_counter() - started) * 1000.0,
         "spawn_mode": spawn_mode,
+    }
+
+
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def run_lifecycle_stage(stage: str, command: str, timeout_s: float) -> Dict[str, object]:
+    started_iso = _now_iso()
+    started = time.perf_counter()
+    result = run_cmd(command, timeout_s=timeout_s)
+    ended_iso = _now_iso()
+    ok = int(result["returncode"]) == 0
+    return {
+        "stage": stage,
+        "status": "ok" if ok else "error",
+        "started_at": started_iso,
+        "ended_at": ended_iso,
+        "duration_ms": (time.perf_counter() - started) * 1000.0,
+        "returncode": int(result["returncode"]),
+        "stderr_preview": str(result.get("stderr", ""))[:300],
+        "spawn_mode": result.get("spawn_mode"),
+        "signal_kind": "proxy_command",
+    }
+
+
+def run_lifecycle_path_probe(stage: str, path: str, timeout_s: float, poll_ms: float = 25.0) -> Dict[str, object]:
+    started_iso = _now_iso()
+    started = time.perf_counter()
+    deadline = time.perf_counter() + timeout_s
+    while time.perf_counter() < deadline:
+        if path and os.path.exists(path):
+            ended_iso = _now_iso()
+            return {
+                "stage": stage,
+                "status": "ok",
+                "started_at": started_iso,
+                "ended_at": ended_iso,
+                "duration_ms": (time.perf_counter() - started) * 1000.0,
+                "returncode": 0,
+                "stderr_preview": "",
+                "spawn_mode": "probe",
+                "signal_kind": "real_wired_path_probe",
+            }
+        time.sleep(max(poll_ms, 1.0) / 1000.0)
+    ended_iso = _now_iso()
+    return {
+        "stage": stage,
+        "status": "error",
+        "started_at": started_iso,
+        "ended_at": ended_iso,
+        "duration_ms": (time.perf_counter() - started) * 1000.0,
+        "returncode": 1,
+        "stderr_preview": f"path not observed before timeout: {path}",
+        "spawn_mode": "probe",
+        "signal_kind": "real_wired_path_probe",
     }
 
 
@@ -116,14 +182,28 @@ def main() -> None:
     parser.add_argument("--audio-accepted-marker", default="")
     parser.add_argument("--require-audio-accepted-marker", action="store_true")
     parser.add_argument("--prefer-infer-json", action="store_true")
+    parser.add_argument("--policy-config", default="benchmarks/baseline/policies/warm_path_policy.json")
+    parser.add_argument("--policy-mode", choices=["default", "fallback", "experimental"], default="default")
+    parser.add_argument("--chunk-ms-override", type=int, default=None)
+    parser.add_argument("--startup-chunks-override", type=int, default=None)
     parser.add_argument("--cleanup-glob", default="")
     parser.add_argument("--cleanup-path", default="")
     parser.add_argument("--timeout-s", type=float, default=600.0)
     parser.add_argument("--poll-ms", type=float, default=50.0)
+    parser.add_argument("--lifecycle-session-start-cmd", default="")
+    parser.add_argument("--lifecycle-avatar-ready-cmd", default="")
+    parser.add_argument("--lifecycle-audio-accepted-cmd", default="")
+    parser.add_argument("--lifecycle-first-frame-signal-cmd", default="")
+    parser.add_argument("--lifecycle-timeout-s", type=float, default=2.0)
+    parser.add_argument("--enable-limited-real-lifecycle-wiring", action="store_true")
+    parser.add_argument("--real-avatar-ready-path", default="")
+    parser.add_argument("--real-avatar-ready-timeout-s", type=float, default=0.75)
     args = parser.parse_args()
 
 
-    ffmpeg_in_infer_cmd = "ffmpeg" in args.infer_cmd.lower()
+    ffmpeg_in_infer_cmd = False
+    lifecycle_stage_outcomes: List[Dict[str, object]] = []
+    lifecycle_any_failed = False
 
     if args.cleanup_glob:
         for p in glob.glob(args.cleanup_glob):
@@ -167,8 +247,51 @@ def main() -> None:
     else:
         prep_ms = 0.0
 
+    lifecycle_stages = [
+        ("session_start", args.lifecycle_session_start_cmd),
+        ("avatar_ready_or_warm_assumed", args.lifecycle_avatar_ready_cmd),
+        ("audio_accepted", args.lifecycle_audio_accepted_cmd),
+        ("first_speaking_frame_signal", args.lifecycle_first_frame_signal_cmd),
+    ]
+    for stage_name, stage_cmd in lifecycle_stages:
+        if stage_name == "first_speaking_frame_signal" and args.enable_limited_real_lifecycle_wiring:
+            # real-wired first-frame stage is evaluated from infer output after command execution
+            continue
+        if not stage_cmd:
+            # limited real wiring for avatar-ready stage: filesystem path probe.
+            if (
+                args.enable_limited_real_lifecycle_wiring
+                and stage_name == "avatar_ready_or_warm_assumed"
+                and args.real_avatar_ready_path
+            ):
+                outcome = run_lifecycle_path_probe(
+                    stage_name,
+                    path=args.real_avatar_ready_path,
+                    timeout_s=args.real_avatar_ready_timeout_s,
+                )
+            else:
+                continue
+        else:
+            outcome = run_lifecycle_stage(stage_name, stage_cmd, timeout_s=args.lifecycle_timeout_s)
+        lifecycle_stage_outcomes.append(outcome)
+        if outcome["status"] != "ok":
+            lifecycle_any_failed = True
+            break
+
+    selection = resolve_policy(
+        policy_path=args.policy_config,
+        policy_mode=args.policy_mode,
+        chunk_ms_override=args.chunk_ms_override,
+        startup_chunks_override=args.startup_chunks_override,
+    )
+    resolved_infer_cmd = args.infer_cmd.format(
+        chunk_ms=selection.chunk_ms,
+        startup_chunks=selection.startup_chunks,
+    )
+    ffmpeg_in_infer_cmd = "ffmpeg" in resolved_infer_cmd.lower()
+
     infer_start_ts = time.time()
-    proc, infer_spawn_mode = spawn_command(args.infer_cmd)
+    proc, infer_spawn_mode = spawn_command(resolved_infer_cmd)
 
     peak = max_vram_mb()
     first_frame_ts = None
@@ -212,6 +335,27 @@ def main() -> None:
 
     last_frame_ts = infer_metrics.get("last_frame_ts") if infer_metrics else newest_frame_mtime(args.frame_glob)
 
+    if args.enable_limited_real_lifecycle_wiring:
+        stage_start_iso = _now_iso()
+        stage_start = time.perf_counter()
+        real_first_frame_ok = first_frame_ts is not None
+        lifecycle_stage_outcomes.append(
+            {
+                "stage": "first_speaking_frame_signal",
+                "status": "ok" if real_first_frame_ok else "error",
+                "started_at": stage_start_iso,
+                "ended_at": _now_iso(),
+                "duration_ms": (time.perf_counter() - stage_start) * 1000.0,
+                "returncode": 0 if real_first_frame_ok else 1,
+                "stderr_preview": "" if real_first_frame_ok else "first_frame_ts not observed",
+                "spawn_mode": "probe",
+                "signal_kind": "real_wired_first_frame_observation",
+                "first_frame_ts": first_frame_ts,
+            }
+        )
+        if not real_first_frame_ok:
+            lifecycle_any_failed = True
+
     latency_anchor = "infer_cmd_start"
     latency_anchor_ts = infer_start_ts
     if audio_accepted_ts is not None:
@@ -225,7 +369,9 @@ def main() -> None:
         steady_fps = (frame_count - 1) / (float(last_frame_ts) - float(first_frame_ts))
 
     status = "ok"
-    if proc.returncode != 0:
+    if lifecycle_any_failed:
+        status = "error"
+    elif proc.returncode != 0:
         status = "oom" if detect_oom(stderr) else "crash"
     elif frame_count == 0 or first_frame_ts is None:
         status = "error"
@@ -253,6 +399,15 @@ def main() -> None:
         "chunk_boundary_rate_hz": infer_metrics.get("chunk_boundary_rate_hz"),
         "continuity_risk_hint": infer_metrics.get("continuity_risk_hint"),
         "cadence_profile": infer_metrics.get("cadence_profile", "unknown"),
+        "policy_mode": selection.policy_mode,
+        "policy_selection_source": selection.source,
+        "policy_chunk_ms": selection.chunk_ms,
+        "policy_startup_chunks": selection.startup_chunks,
+        "lifecycle_stage_count": len(lifecycle_stage_outcomes),
+        "lifecycle_stage_statuses": [s["status"] for s in lifecycle_stage_outcomes],
+        "lifecycle_signal_kinds": [s.get("signal_kind", "unknown") for s in lifecycle_stage_outcomes],
+        "lifecycle_signals_are_proxy": not args.enable_limited_real_lifecycle_wiring,
+        "limited_real_lifecycle_wiring_enabled": args.enable_limited_real_lifecycle_wiring,
     }
 
     print(json.dumps({
@@ -264,6 +419,7 @@ def main() -> None:
         "error_message": (stderr or "")[:500] if status not in ("ok", "partial") else None,
         "duration_ms": (infer_end - infer_start_ts) * 1000.0,
         "frame_count": frame_count,
+        "lifecycle_stage_outcomes": lifecycle_stage_outcomes,
         "measurement_provenance": provenance,
     }))
 

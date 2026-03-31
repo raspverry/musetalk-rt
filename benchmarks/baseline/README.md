@@ -13,6 +13,7 @@ Non-breaking extensions used for provenance:
 - top-level `environment`
 - per-run `measurement_provenance`
 - summary `partial_runs`
+- per-run `lifecycle_stage_outcomes` (optional, when lifecycle probe enabled)
 
 ## Cold-path vs warm-path metric semantics
 
@@ -69,13 +70,31 @@ Aggressive policies `(40,1)` and `(80,1)` are kept as experiment-only due to hig
 - `--prefer-infer-json` reduces file-system dependency by consuming command-emitted timing metrics.
 - Every run records provenance fields to make boundaries explicit, including `infer_spawn_mode`, `file_polling_used`, and chunk continuity hints.
 
+Lifecycle probe signal boundaries:
+- `session_start`: **proxy** command-level stage (not runtime callback binding yet)
+- `avatar_ready_or_warm_assumed`: **proxy** stage by default; can be **limited real-wired** via `--enable-limited-real-lifecycle-wiring --real-avatar-ready-path <path>` (filesystem readiness probe)
+- `audio_accepted`: **proxy or semi-real** depending on marker/event source used by the command
+- `first_speaking_frame_signal`: **limited real-wired** in flagged mode by observing actual first-frame evidence (`first_frame_ts`) from infer output/file signals
+
+Recommendation for limited real MuseTalk wiring:
+- The current lifecycle path is stable enough for **limited, guarded wiring experiments** behind flags.
+- It is **not yet sufficient** for broad production wiring without direct runtime event contracts.
+
+Flagged limited real wiring example:
+```bash
+python benchmarks/baseline/musetalk_baseline_runner.py \
+  --enable-limited-real-lifecycle-wiring \
+  --real-avatar-ready-path runtime/session/README.md \
+  ...
+```
+
 ## Validator
 `validate_report.py` verifies required fields and consistency.
 
 Strict warm-anchor + chunk provenance example:
 ```bash
 python benchmarks/baseline/validate_report.py \
-  --report benchmarks/baseline/reports/runtime_facing_default_tts_bursty_cm120_sc1_report.json \
+  --report benchmarks/baseline/reports/runtime_facing_default_tts_bursty_report.json \
   --strict-warm-anchor \
   --require-chunk-provenance
 ```

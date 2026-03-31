@@ -16,8 +16,14 @@ def run_cmd(cmd: str) -> None:
     subprocess.run(cmd, shell=True, check=True)
 
 
-def make_scenario(name: str, chunk_ms: int, startup_chunks: int, cadence_profile: str) -> Path:
-    scenario_id = f"runtime_facing_{name}_{cadence_profile}_cm{chunk_ms}_sc{startup_chunks}"
+def make_scenario(policy_mode: str, cadence_profile: str, chunk_override: int | None = None, startup_override: int | None = None) -> Path:
+    scenario_id = f"runtime_facing_{policy_mode}_{cadence_profile}"
+    overrides = ""
+    if chunk_override is not None:
+        overrides += f" --chunk-ms-override {chunk_override}"
+    if startup_override is not None:
+        overrides += f" --startup-chunks-override {startup_override}"
+
     scenario = {
         "scenario_id": scenario_id,
         "mode": "warm_start",
@@ -26,10 +32,11 @@ def make_scenario(name: str, chunk_ms: int, startup_chunks: int, cadence_profile
         "timeout_s": 120,
         "command": (
             "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start "
+            f"--policy-config {POLICY_PATH} --policy-mode {policy_mode}{overrides} "
             "--infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py "
             "--frames-dir benchmarks/baseline/tmp/frames "
             "--audio-accept-ms 80 --post-accept-startup-ms 0 "
-            f"--chunk-ms {chunk_ms} --startup-chunks {startup_chunks} --chunk-overhead-ms 8 "
+            "--chunk-ms {chunk_ms} --startup-chunks {startup_chunks} --chunk-overhead-ms 8 "
             f"--cadence-profile {cadence_profile} "
             "--fps 23 --num-frames 50 --disable-frame-write --emit-metrics-json' "
             "--frame-glob 'benchmarks/baseline/tmp/frames/*.png' "
@@ -43,13 +50,9 @@ def make_scenario(name: str, chunk_ms: int, startup_chunks: int, cadence_profile
 
 
 def main() -> None:
-    policy = json.loads(POLICY_PATH.read_text())
-    default = policy["default"]
-    fallback = policy["fallback"]
-
     outputs = []
-    for name, cfg in [("default", default), ("fallback", fallback)]:
-        scenario_path = make_scenario(name, cfg["chunk_ms"], cfg["startup_chunks"], "tts_bursty")
+    for policy_mode in ["default", "fallback"]:
+        scenario_path = make_scenario(policy_mode, "tts_bursty")
         run_cmd(f"python benchmarks/baseline/benchmark_harness.py --scenario {scenario_path} --output-dir {REPORT_DIR}")
         report_path = REPORT_DIR / f"{scenario_path.stem}_report.json"
         run_cmd(
@@ -57,12 +60,17 @@ def main() -> None:
             f"--report {report_path} --strict-warm-anchor --require-chunk-provenance"
         )
         report = json.loads(report_path.read_text())
+        prov = report["results"][0]["measurement_provenance"]
         outputs.append(
             {
                 "scenario": scenario_path.stem,
                 "first_frame_latency_ms_mean": report["summary"]["first_frame_latency_ms"]["mean"],
                 "steady_state_fps_mean": report["summary"]["steady_state_fps"]["mean"],
-                "continuity_risk_hint": report["results"][0]["measurement_provenance"].get("continuity_risk_hint"),
+                "continuity_risk_hint": prov.get("continuity_risk_hint"),
+                "policy_mode": prov.get("policy_mode"),
+                "policy_selection_source": prov.get("policy_selection_source"),
+                "policy_chunk_ms": prov.get("policy_chunk_ms"),
+                "policy_startup_chunks": prov.get("policy_startup_chunks"),
             }
         )
 

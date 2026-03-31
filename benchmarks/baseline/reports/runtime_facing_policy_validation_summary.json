@@ -1,14 +1,22 @@
 [
   {
-    "scenario": "runtime_facing_default_tts_bursty_cm120_sc1",
-    "first_frame_latency_ms_mean": 103.258,
-    "steady_state_fps_mean": 22.424,
-    "continuity_risk_hint": "medium_plus_bursty"
+    "scenario": "runtime_facing_default_tts_bursty",
+    "first_frame_latency_ms_mean": 104.559,
+    "steady_state_fps_mean": 22.416,
+    "continuity_risk_hint": "medium_plus_bursty",
+    "policy_mode": "default",
+    "policy_selection_source": "policy:default",
+    "policy_chunk_ms": 120,
+    "policy_startup_chunks": 1
   },
   {
-    "scenario": "runtime_facing_fallback_tts_bursty_cm160_sc2",
-    "first_frame_latency_ms_mean": 362.321,
-    "steady_state_fps_mean": 22.444,
-    "continuity_risk_hint": "lower_boundary_churn"
+    "scenario": "runtime_facing_fallback_tts_bursty",
+    "first_frame_latency_ms_mean": 362.248,
+    "steady_state_fps_mean": 22.449,
+    "continuity_risk_hint": "lower_boundary_churn",
+    "policy_mode": "fallback",
+    "policy_selection_source": "policy:fallback",
+    "policy_chunk_ms": 160,
+    "policy_startup_chunks": 2
   }
 ]

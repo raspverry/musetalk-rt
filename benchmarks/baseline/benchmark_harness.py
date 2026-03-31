@@ -36,6 +36,7 @@ class RunResult:
     duration_ms: float
     error_message: Optional[str] = None
     measurement_provenance: Optional[Dict[str, Any]] = None
+    lifecycle_stage_outcomes: Optional[List[Dict[str, Any]]] = None
 
 
 class ScenarioError(Exception):
@@ -243,6 +244,7 @@ def main() -> None:
                     ),
                     error_message=payload.get("error_message"),
                     measurement_provenance=payload.get("measurement_provenance"),
+                    lifecycle_stage_outcomes=payload.get("lifecycle_stage_outcomes"),
                 )
             )
         except Exception as exc:

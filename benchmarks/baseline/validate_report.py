@@ -66,7 +66,7 @@ def main() -> None:
                 fail(f"run[{idx}] missing {key} provenance")
 
         if args.require_chunk_provenance:
-            for key in ["chunk_ms", "startup_chunks", "chunk_overhead_ms", "startup_delay_ms", "continuity_risk_hint", "cadence_profile"]:
+            for key in ["chunk_ms", "startup_chunks", "chunk_overhead_ms", "startup_delay_ms", "continuity_risk_hint", "cadence_profile", "policy_mode", "policy_selection_source", "policy_chunk_ms", "policy_startup_chunks"]:
                 if key not in prov:
                     fail(f"run[{idx}] missing {key} chunk provenance")
 
@@ -84,6 +84,17 @@ def main() -> None:
                 fail(f"run[{idx}] strict warm anchor expected audio_accepted_marker, got: {anchor}")
             if run["avatar_preparation_time_ms"] not in (0, 0.0):
                 fail(f"run[{idx}] warm mode must report avatar_preparation_time_ms as 0.0")
+
+        lifecycle = run.get("lifecycle_stage_outcomes")
+        if lifecycle is not None:
+            if not isinstance(lifecycle, list):
+                fail(f"run[{idx}] lifecycle_stage_outcomes must be a list when provided")
+            for sidx, stage in enumerate(lifecycle, start=1):
+                for key in ["stage", "status", "started_at", "ended_at", "duration_ms", "returncode", "signal_kind"]:
+                    if key not in stage:
+                        fail(f"run[{idx}] lifecycle_stage_outcomes[{sidx}] missing key: {key}")
+                if stage["status"] not in {"ok", "error"}:
+                    fail(f"run[{idx}] lifecycle_stage_outcomes[{sidx}] invalid status: {stage['status']}")
 
     print(json.dumps({"report": str(args.report), "validation": "ok"}))
 
