@@ -1,0 +1,141 @@
+{
+  "analysis": "flagged_e2e_quality_validation",
+  "source_report": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_qv12_report.json",
+  "total_runs": 12,
+  "fallback_runs": 0,
+  "fallback_rate": 0.0,
+  "lifecycle_stage_error_total": 0,
+  "stage_error_counts": {},
+  "stage_signal_kind_counts": {
+    "session_start": {
+      "real_wired_session_start_observation": 12
+    },
+    "avatar_ready_or_warm_assumed": {
+      "real_wired_avatar_probe": 12
+    },
+    "audio_accepted": {
+      "real_wired_audio_accepted_observation": 12
+    },
+    "first_speaking_frame_signal": {
+      "real_wired_first_frame_observation": 12
+    }
+  },
+  "quality_metrics": {
+    "first_frame_latency_ms": {
+      "p50": 129.19974327087402,
+      "p95": 129.45324182510376,
+      "spread_ms": 0.4799365997314453
+    },
+    "steady_state_fps": {
+      "p50": 18.932211891915014,
+      "p95": 18.940831367419726,
+      "spread_fps": 0.02145951153374881
+    },
+    "frame_jitter_ms": {
+      "p50": 0.021697341960578088,
+      "p95": 0.05035846094470439,
+      "max": 0.053005640567417196
+    },
+    "continuity_risk_hint_counts": {
+      "lower_boundary_churn": 12
+    },
+    "continuity_risk_basis_counts": {
+      "policy_plus_observed_stability": 12
+    },
+    "cadence_profile_counts": {
+      "fixed": 12
+    }
+  },
+  "observations": [
+    "No lifecycle fallback or stage errors observed in this quality validation pass.",
+    "TTS cadence sensitivity sampled only for cadence profile: fixed."
+  ],
+  "limitations": [
+    "Proxy/fixture approximation cannot replace human MOS-style naturalness review.",
+    "No network/mobile jitter injection in this pass; cadence sensitivity is approximation-only.",
+    "Seam/continuity and first-response naturalness conclusions are telemetry-guided, not perceptual ground truth."
+  ],
+  "recommendation_warn_only_canary": "safe_to_try_warn_only_canary",
+  "next_validation_under_jitter": [
+    "Inject bursty + delayed chunk arrival with random jitter envelopes (e.g. 20-200ms) and rerun stage/error tracking.",
+    "Run mixed cadence profiles (fixed, tts_bursty, jittery) while checking seam artifacts and first response stability.",
+    "Add packet-loss/drop simulation to validate fallback transparency and quality degradation boundaries."
+  ],
+  "comparison": {
+    "compare_summary": "benchmarks/baseline/reports/lifecycle_e2e_flagged_session_probe_audio_session_real_r30_reliability_summary.json",
+    "before_fallback_rate": 0.0,
+    "after_fallback_rate": 0.0,
+    "before_stage_signal_mix": {
+      "session_start": {
+        "total": 30,
+        "signal_kind_counts": {
+          "real_wired_session_start_observation": 30
+        },
+        "bucket_rates": {
+          "real_wired": 1.0,
+          "proxy": 0.0,
+          "fallback": 0.0
+        },
+        "error_count": 0
+      },
+      "avatar_ready_or_warm_assumed": {
+        "total": 30,
+        "signal_kind_counts": {
+          "real_wired_avatar_probe": 30
+        },
+        "bucket_rates": {
+          "real_wired": 1.0,
+          "proxy": 0.0,
+          "fallback": 0.0
+        },
+        "error_count": 0
+      },
+      "audio_accepted": {
+        "total": 30,
+        "signal_kind_counts": {
+          "real_wired_audio_accepted_observation": 30
+        },
+        "bucket_rates": {
+          "real_wired": 1.0,
+          "proxy": 0.0,
+          "fallback": 0.0
+        },
+        "error_count": 0
+      },
+      "first_speaking_frame_signal": {
+        "total": 30,
+        "signal_kind_counts": {
+          "real_wired_first_frame_observation": 30
+        },
+        "bucket_rates": {
+          "real_wired": 1.0,
+          "proxy": 0.0,
+          "fallback": 0.0
+        },
+        "error_count": 0
+      }
+    },
+    "after_stage_signal_mix": {
+      "session_start": {
+        "signal_kind_counts": {
+          "real_wired_session_start_observation": 12
+        }
+      },
+      "avatar_ready_or_warm_assumed": {
+        "signal_kind_counts": {
+          "real_wired_avatar_probe": 12
+        }
+      },
+      "audio_accepted": {
+        "signal_kind_counts": {
+          "real_wired_audio_accepted_observation": 12
+        }
+      },
+      "first_speaking_frame_signal": {
+        "signal_kind_counts": {
+          "real_wired_first_frame_observation": 12
+        }
+      }
+    }
+  }
+}

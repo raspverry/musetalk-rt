@@ -1,0 +1,30 @@
+{
+  "analysis": "flagged_human_qa_decision_layer",
+  "qa_pack": "benchmarks/baseline/reports/lifecycle_e2e_flagged_human_qa_pack_v1.json",
+  "scorecard": "benchmarks/baseline/reports/lifecycle_e2e_flagged_human_qa_pack_v1_scorecard_template.json",
+  "decision": "NO_GO_INSUFFICIENT_HUMAN_QA",
+  "reason": "Missing human scores; cannot establish canary readiness.",
+  "rollback_recommendation": "Keep fully permissive fallback and do not progress canary tightening.",
+  "thresholds": {
+    "continuity_seam_perception": 3.8,
+    "first_response_naturalness": 3.5,
+    "speaking_stability": 3.8,
+    "audio_visual_alignment_at_response_start": 4.0,
+    "minimum_allowed_single_sample": 3.0
+  },
+  "avg_scores": {
+    "continuity_seam_perception": null,
+    "first_response_naturalness": null,
+    "speaking_stability": null,
+    "audio_visual_alignment_at_response_start": null
+  },
+  "minimum_single_sample_score": null,
+  "score_rows_total": 9,
+  "score_rows_with_missing_values": 9,
+  "additional_evidence_needed_before_broader_readiness_claim": [
+    "Completed multi-reviewer scorecards across multiple sessions and prompts.",
+    "Reviewer agreement analysis (inter-rater consistency) on seam/naturalness.",
+    "Repeated stressed-run QA passes showing threshold stability over time.",
+    "Documented canary rollback drill with explicit trigger thresholds."
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "scenario_id": "real_cold_start_local",
+  "mode": "cold_start",
+  "adapter": "command",
+  "runs": 3,
+  "timeout_s": 120,
+  "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode cold_start --prep-cmd 'python benchmarks/baseline/fixtures/approx_prep.py --sleep-ms 1400 --cache-flag benchmarks/baseline/tmp/avatar.cache' --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --startup-ms 700 --fps 23 --num-frames 50' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png'"
+}

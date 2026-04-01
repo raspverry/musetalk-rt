@@ -1,0 +1,8 @@
+{
+  "scenario_id": "real_warm_chunk_ms80_sc2",
+  "mode": "warm_start",
+  "adapter": "command",
+  "runs": 2,
+  "timeout_s": 120,
+  "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode warm_start --infer-cmd 'python benchmarks/baseline/fixtures/approx_infer.py --frames-dir benchmarks/baseline/tmp/frames --audio-accept-ms 80 --post-accept-startup-ms 0 --chunk-ms 80 --startup-chunks 2 --chunk-overhead-ms 8 --fps 23 --num-frames 50 --disable-frame-write --emit-metrics-json' --frame-glob 'benchmarks/baseline/tmp/frames/*.png' --require-audio-accepted-marker --prefer-infer-json --cleanup-glob 'benchmarks/baseline/tmp/frames/*.png'"
+}

@@ -1,49 +1,77 @@
-# MuseTalk-RT Documentation Pack
+# MuseTalk-RT: Productization + Validation Stack for a MuseTalk Runtime Candidate
 
-This pack is a working documentation set for a **server-first, perception-real-time avatar product** built by forking and productizing MuseTalk.
+- Language: **English** | [한국어](README.ko.md) | [日本語](README.ja.md)
 
-## Project intent
-Turn MuseTalk from a research-style lip-sync repository into a production-oriented runtime for:
-- fixed-avatar conversational agents
-- idle-loop based avatar playback
-- server-side lip-sync generation
-- low-latency iPhone app streaming
+## What is this project?
+MuseTalk-RT is a **productization and validation stack** for a MuseTalk-based perceived real-time conversational avatar runtime candidate.
 
-## What is in this pack
-- strategy docs
-- agent operating docs for Claude Code / Codex
-- runtime API and playback specs
-- benchmark / evaluation specs
-- refactor and optimization plans
-- training / research notes
-- ADRs for major decisions
-- a `program.md` file inspired by `autoresearch`
+This repository is **not** a full production runtime yet. It is the flagged, non-production layer used to make the runtime candidate measurable, debuggable, trustworthy, and canary-ready.
 
-## Recommended reading order
-1. `docs/00_strategy/PROJECT_BRIEF.md`
-2. `docs/00_strategy/PRODUCT_REQUIREMENTS.md`
-3. `docs/00_strategy/TECHNICAL_ARCHITECTURE.md`
-4. `docs/01_agent_ops/AGENT_OPERATING_MANUAL.md`
-5. `docs/02_eval/EVALUATION_SPEC.md`
-6. `docs/03_runtime/RUNTIME_API_SPEC.md`
-7. `program.md`
+## Project north star
+Build a MuseTalk-derived runtime candidate toward a perceived real-time conversational avatar system, then graduate it from flagged non-production validation into controlled canary readiness with human-validated quality evidence.
 
-## Current assumptions
-- Phase 1 target is **server-side inference**, not full iPhone on-device inference.
-- The product goal is **perceived real-time**, not zero-latency full-video generation.
-- A single avatar is prepared once and reused across a session.
-- Idle motion is looped continuously and speaking frames are streamed on top of that interaction model.
-- Claude Code / Codex are expected to be used aggressively, but only inside a tightly scoped evaluation harness.
+## Current status (concise)
+See [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md) for details.
 
-## Upstream references
-- MuseTalk upstream repo: https://github.com/TMElyralab/MuseTalk
-- MuseTalk technical report: https://arxiv.org/abs/2410.10122
-- autoresearch repo: https://github.com/karpathy/autoresearch
-- Core ML overview: https://developer.apple.com/machine-learning/core-ml/
+### Completed (high level)
+- Warm-path policy defined and operationalized.
+- End-to-end lifecycle validation stack in place (readiness → dry-run → smoke → tiny real → lifecycle-aware → flagged e2e).
+- Four key lifecycle stages provisionally real-wired on flagged path.
+- 30-run flagged reliability pass with zero fallback and zero lifecycle stage errors.
+- Stress validation under bursty/jittery conditions with preserved lifecycle stability.
+- Quality telemetry and human-QA pack/scorecard/decision layer implemented.
+- Local GUI + multilingual docs available.
 
-## Important note
-Some sections in this pack are intentionally written as **decision-ready operating assumptions**, not as immutable truths. Where the upstream codebase or product direction changes, update:
-- ADRs
-- evaluation gates
-- benchmark dataset spec
-- runtime API spec
+### Remaining (high level)
+- Collect real human reviewer scores at scale.
+- Complete canary evidence package.
+- Validate mobile/network-like perceptual behavior with human evidence.
+- Establish broader product-readiness evidence beyond flagged scope.
+
+## What this repo currently is
+- Runtime validation + productization layer for a runtime candidate.
+- Flagged, non-production experimentation and evidence-building stack.
+- Decision support layer for GO/WARN/NO-GO canary outcomes.
+
+## What this repo is not (yet)
+- Not a production orchestration layer.
+- Not a broad deployment/monitoring/rollback platform.
+- Not a finalized production UI.
+
+## Typical workflow
+1. Read [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md).
+2. Run reliability/quality/stress workflows.
+3. Build human-QA pack and fill scorecard.
+4. Evaluate decision summary.
+5. Assess canary readiness against explicit thresholds.
+
+## Execution readiness docs
+- Reviewer handoff: [docs/REVIEWER_HANDOFF.md](docs/REVIEWER_HANDOFF.md)
+- Maintainer decision checklist: [docs/MAINTAINER_DECISION_CHECKLIST.md](docs/MAINTAINER_DECISION_CHECKLIST.md)
+
+## What is still experimental?
+- Full perceptual confidence still depends on collected human scores.
+- Canary evidence is still being completed.
+- Broader product-readiness remains unproven.
+
+## How to run QA
+See [docs/QA_WORKFLOW.md](docs/QA_WORKFLOW.md).
+
+## How to interpret GO_WARN_ONLY_CANARY / WARN_ONLY_HOLD / NO_GO
+See [docs/REPORTS_AND_DECISIONS.md](docs/REPORTS_AND_DECISIONS.md).
+
+## Local GUI (Streamlit)
+A lightweight local dashboard is available at `app/qa_dashboard.py`.
+
+```bash
+pip install streamlit
+streamlit run app/qa_dashboard.py
+```
+
+## New teammate: read this first (10-minute path)
+1. [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md)
+2. [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)
+3. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+4. [docs/QA_WORKFLOW.md](docs/QA_WORKFLOW.md)
+5. [docs/REPORTS_AND_DECISIONS.md](docs/REPORTS_AND_DECISIONS.md)
+6. [docs/ROADMAP.md](docs/ROADMAP.md)

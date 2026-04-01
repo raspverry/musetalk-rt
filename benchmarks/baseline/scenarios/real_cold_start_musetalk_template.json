@@ -1,0 +1,8 @@
+{
+  "scenario_id": "real_cold_start_musetalk_template",
+  "mode": "cold_start",
+  "adapter": "command",
+  "runs": 5,
+  "timeout_s": 600,
+  "command": "python benchmarks/baseline/musetalk_baseline_runner.py --mode cold_start --prep-cmd 'python /path/to/MuseTalk/scripts/realtime_inference.py --prepare-avatar --avatar-id avatar_001 ...' --infer-cmd 'python /path/to/MuseTalk/scripts/realtime_inference.py --avatar-id avatar_001 --audio /path/to/audio.wav ...' --frame-glob '/tmp/musetalk_frames/*.png' --cleanup-glob '/tmp/musetalk_frames/*.png'"
+}
